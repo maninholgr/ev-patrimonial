@@ -519,35 +519,27 @@ export default function Dashboard() {
                     </td>
 
                     <td
-                      className={`p-3 font-semibold
+  className={`p-3 font-semibold ${
+    movimentacao.tipo ===
+      "aporte" ||
+    movimentacao.tipo ===
+      "rendimento"
+      ? "text-green-600"
+      : "text-red-500"
+  }`}
+>
 
-                        ${
-                          movimentacao.tipo ===
-                            "aporte" ||
-                          movimentacao.tipo ===
-                            "rendimento"
-
-                            ? "text-green-600"
-
-                            : "text-red-500"
-                        }
-
-                      `}
-                    >
-
-                      R$ {
-  Number(
-    mov.valor
+  {`R$ ${Number(
+    movimentacao.valor
   ).toLocaleString(
     "pt-BR",
     {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     }
-  )
-}
+  )}`}
 
-                    </td>
+</td>
 
                     <td className="p-3 text-gray-700">
                       {movimentacao.descricao}

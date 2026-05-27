@@ -69,7 +69,7 @@ export default function Home() {
               onChange={(e) =>
                 setEmail(e.target.value)
               }
-              className="w-full rounded-lg border border-gray-300 p-3 outline-none transition focus:border-[#0B1727]"
+              className="w-full rounded-lg border border-gray-300 p-3 text-black outline-none transition focus:border-[#0B1727]"
             />
           </div>
 
@@ -85,7 +85,7 @@ export default function Home() {
               onChange={(e) =>
                 setSenha(e.target.value)
               }
-              className="w-full rounded-lg border border-gray-300 p-3 outline-none transition focus:border-[#0B1727]"
+              className="w-full rounded-lg border border-gray-300 p-3 text-black outline-none transition focus:border-[#0B1727]"
             />
           </div>
 

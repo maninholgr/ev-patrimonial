@@ -312,7 +312,7 @@ export default function Admin() {
 
                 <div>
 
-                  <h3 className="text-xl font-bold">
+                  <h3 className="text-xl font-bold text-[#0B1727]">
                     {investidor.nome}
                   </h3>
 
@@ -328,21 +328,21 @@ export default function Admin() {
 
                 <div className="text-right">
 
-                  <p>
+                  <p className="text-gray-700">
                     <strong>Patrimônio:</strong>{" "}
                     R$ {
                       investidor.valor_investido
                     }
                   </p>
 
-                  <p>
+                  <p className="text-gray-700">
                     <strong>Lucro:</strong>{" "}
                     R$ {
                       investidor.lucro_mensal
                     }
                   </p>
 
-                  <p>
+                  <p className="text-gray-700">
                     <strong>Rentabilidade:</strong>{" "}
                     {
                       investidor.rentabilidade

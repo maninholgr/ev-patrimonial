@@ -1,57 +1,65 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+
+import {
+  useEffect,
+  useState,
+} from "react";
+
 import { supabase } from "../../lib/supabase";
 
 export default function Admin() {
 
-  const router = useRouter();  
-  const [nome, setNome] = useState("");
-  const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
+  const router = useRouter();
+
+  const [nome, setNome] =
+    useState("");
+
+  const [email, setEmail] =
+    useState("");
+
+  const [senha, setSenha] =
+    useState("");
+
   const [telefone, setTelefone] =
-  useState("");
-  const [valorInvestido, setValorInvestido] = useState("");
-  const [lucroMensal, setLucroMensal] = useState("");
-  const [rentabilidade, setRentabilidade] = useState("");
+    useState("");
 
-  const [investidores, setInvestidores] = useState<any[]>([]);
-
-  const [investidorId, setInvestidorId] = useState("");
-
-  const [mes, setMes] = useState("");
-  const [ano, setAno] = useState("");
-
-  const [valor, setValor] = useState("");
-  const [
-    rentabilidadeRendimento,
-    setRentabilidadeRendimento,
-  ] = useState("");
+  const [investidores, setInvestidores] =
+    useState<any[]>([]);
 
   const [editandoId, setEditandoId] =
     useState<string | null>(null);
 
   useEffect(() => {
 
-  const admin =
-    localStorage.getItem("admin");
+    const admin =
+      localStorage.getItem(
+        "admin"
+      );
 
-  if (admin !== "logado") {
+    if (admin !== "logado") {
 
-    router.push(
-      "/admin/login"
-    );
+      router.push(
+        "/admin/login"
+      );
 
-    return;
-  }
+      return;
+    }
+
     carregarInvestidores();
+
   }, []);
 
   async function carregarInvestidores() {
 
-    const { data, error } = await supabase
-      .from("evpatrimonial_investidores")
+    const {
+      data: investidoresData,
+      error,
+    } = await supabase
+      .from(
+        "evpatrimonial_investidores"
+      )
       .select("*");
 
     if (error) {
@@ -59,130 +67,193 @@ export default function Admin() {
       return;
     }
 
-    setInvestidores(data || []);
-  }
+    const investidoresComValores =
+      await Promise.all(
 
-  async function cadastrarRendimento() {
+        (investidoresData || []).map(
+          async (
+            investidor
+          ) => {
 
-    const { error } = await supabase
-      .from("evpatrimonial_rendimentos")
-      .insert([
-        {
-          investidor_id: investidorId,
-          mes,
-          ano,
-          valor,
-          rentabilidade:
-            rentabilidadeRendimento,
-        },
-      ]);
+            const {
+              data: movimentacoes,
+            } = await supabase
+              .from(
+                "evpatrimonial_movimentacoes"
+              )
+              .select("*")
+              .eq(
+                "investidor_id",
+                investidor.id
+              );
 
-    if (error) {
-      console.log(error);
-      alert("Erro ao cadastrar rendimento");
-      return;
-    }
+            let patrimonio = 0;
+            let lucro = 0;
 
-    await supabase
-  .from(
-    "evpatrimonial_movimentacoes"
-  )
-  .insert([
-    {
-      investidor_id:
-        investidorId,
+            movimentacoes?.forEach(
+              (mov) => {
 
-      tipo: "rendimento",
+                if (
+                  mov.tipo ===
+                    "aporte" ||
+                  mov.tipo ===
+                    "rendimento"
+                ) {
 
-      valor,
+                  patrimonio +=
+                    Number(
+                      mov.valor
+                    );
+                }
 
-      descricao:
-        `Rendimento ${mes}/${ano}`,
-    },
-  ]);
+                if (
+                  mov.tipo ===
+                    "rendimento"
+                ) {
 
-    alert("Rendimento cadastrado!");
+                  lucro += Number(
+                    mov.valor
+                  );
+                }
 
-    setInvestidorId("");
+                if (
+                  mov.tipo ===
+                    "saque" ||
+                  mov.tipo ===
+                    "taxa"
+                ) {
 
-    setMes("");
-    setAno("");
+                  patrimonio -=
+                    Number(
+                      mov.valor
+                    );
+                }
 
-    setValor("");
-    setRentabilidadeRendimento("");
+              }
+            );
+
+            const rentabilidade =
+              patrimonio > 0
+                ? (
+                    (lucro /
+                      patrimonio) *
+                    100
+                  ).toFixed(2)
+                : "0.00";
+
+            return {
+              ...investidor,
+              patrimonio,
+              lucro,
+              rentabilidade,
+            };
+
+          }
+        )
+      );
+
+    setInvestidores(
+      investidoresComValores
+    );
   }
 
   async function cadastrarInvestidor() {
 
     if (editandoId !== null) {
 
-      const { error } = await supabase
-        .from("evpatrimonial_investidores")
-        .update({
-          nome,
-          email,
-          senha,
-          telefone,
-          valor_investido:
-            valorInvestido,
-          lucro_mensal:
-            lucroMensal,
-          rentabilidade,
-        })
-        .eq("id", editandoId);
+      const { error } =
+        await supabase
+          .from(
+            "evpatrimonial_investidores"
+          )
+          .update({
+            nome,
+            email,
+            senha,
+            telefone,
+          })
+          .eq(
+            "id",
+            editandoId
+          );
 
       if (error) {
+
         console.log(error);
-        alert("Erro ao atualizar");
+
+        alert(
+          "Erro ao atualizar"
+        );
+
         return;
       }
 
-      alert("Investidor atualizado!");
+      alert(
+        "Investidor atualizado!"
+      );
 
       setEditandoId(null);
 
     } else {
 
-      const { error } = await supabase
-        .from("evpatrimonial_investidores")
-        .insert([
-          {
-            nome,
-            email,
-            senha,
-            telefone,
-            valor_investido:
-              valorInvestido,
-            lucro_mensal:
-              lucroMensal,
-            rentabilidade,
-          },
-        ]);
+      const { error } =
+        await supabase
+          .from(
+            "evpatrimonial_investidores"
+          )
+          .insert([
+            {
+              nome,
+              email,
+              senha,
+              telefone,
+            },
+          ]);
 
       if (error) {
+
         console.log(error);
-        alert("Erro ao cadastrar");
+
+        alert(
+          "Erro ao cadastrar"
+        );
+
         return;
       }
 
-      alert("Investidor cadastrado!");
+      alert(
+        "Investidor cadastrado!"
+      );
     }
 
     setNome("");
     setEmail("");
     setSenha("");
     setTelefone("");
-    setValorInvestido("");
-    setLucroMensal("");
-    setRentabilidade("");
 
     carregarInvestidores();
+  }
+
+  function formatarValor(
+    valor: number
+  ) {
+
+    return Number(
+      Number(valor).toFixed(2)
+    ).toLocaleString(
+      "pt-BR",
+      {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }
+    );
   }
 
   return (
     <main className="min-h-screen bg-[#F4F7FA] p-10">
 
-      {/* CADASTRO INVESTIDOR */}
+      {/* CADASTRO */}
+
       <div className="mx-auto max-w-2xl rounded-2xl bg-white p-10 shadow-lg">
 
         <h1 className="mb-8 text-4xl font-bold text-[#0B1727]">
@@ -190,15 +261,15 @@ export default function Admin() {
         </h1>
 
         <button
-  onClick={() =>
-    router.push(
-      "/admin/movimentacoes"
-    )
-  }
-  className="mb-6 rounded-lg bg-[#0B1727] px-5 py-3 text-white transition hover:opacity-90"
->
-  Ir para Movimentações
-</button>
+          onClick={() =>
+            router.push(
+              "/admin/movimentacoes"
+            )
+          }
+          className="mb-6 rounded-lg bg-[#0B1727] px-5 py-3 text-white transition hover:opacity-90"
+        >
+          Ir para Movimentações
+        </button>
 
         <div className="space-y-5">
 
@@ -207,9 +278,11 @@ export default function Admin() {
             placeholder="Nome"
             value={nome}
             onChange={(e) =>
-              setNome(e.target.value)
+              setNome(
+                e.target.value
+              )
             }
-            className="w-full rounded-lg border border-gray-300 p-3 text-black placeholder:text-gray-500"
+            className="w-full rounded-lg border border-gray-300 p-3 text-black"
           />
 
           <input
@@ -217,9 +290,11 @@ export default function Admin() {
             placeholder="E-mail"
             value={email}
             onChange={(e) =>
-              setEmail(e.target.value)
+              setEmail(
+                e.target.value
+              )
             }
-            className="w-full rounded-lg border border-gray-300 p-3 text-black placeholder:text-gray-500"
+            className="w-full rounded-lg border border-gray-300 p-3 text-black"
           />
 
           <input
@@ -227,61 +302,29 @@ export default function Admin() {
             placeholder="Senha"
             value={senha}
             onChange={(e) =>
-              setSenha(e.target.value)
-            }
-            className="w-full rounded-lg border border-gray-300 p-3 text-black placeholder:text-gray-500"
-          />
-
-          <input
-  type="text"
-  placeholder="Telefone"
-  value={telefone}
-  onChange={(e) =>
-    setTelefone(
-      e.target.value
-    )
-  }
-  className="w-full rounded-lg border border-gray-300 p-3 text-black placeholder:text-gray-500"
-/>
-
-          <input
-            type="number"
-            placeholder="Valor Investido"
-            value={valorInvestido}
-            onChange={(e) =>
-              setValorInvestido(
+              setSenha(
                 e.target.value
               )
             }
-            className="w-full rounded-lg border border-gray-300 p-3 text-black placeholder:text-gray-500"
+            className="w-full rounded-lg border border-gray-300 p-3 text-black"
           />
 
           <input
-            type="number"
-            placeholder="Lucro Mensal"
-            value={lucroMensal}
+            type="text"
+            placeholder="Telefone"
+            value={telefone}
             onChange={(e) =>
-              setLucroMensal(
+              setTelefone(
                 e.target.value
               )
             }
-            className="w-full rounded-lg border border-gray-300 p-3 text-black placeholder:text-gray-500"
-          />
-
-          <input
-            type="number"
-            placeholder="Rentabilidade"
-            value={rentabilidade}
-            onChange={(e) =>
-              setRentabilidade(
-                e.target.value
-              )
-            }
-            className="w-full rounded-lg border border-gray-300 p-3 text-black placeholder:text-gray-500"
+            className="w-full rounded-lg border border-gray-300 p-3 text-black"
           />
 
           <button
-            onClick={cadastrarInvestidor}
+            onClick={
+              cadastrarInvestidor
+            }
             className="w-full rounded-lg bg-[#0B1727] p-4 text-white"
           >
             {editandoId
@@ -290,9 +333,11 @@ export default function Admin() {
           </button>
 
         </div>
+
       </div>
 
-      {/* LISTA INVESTIDORES */}
+      {/* LISTA */}
+
       <div className="mx-auto mt-10 max-w-5xl rounded-2xl bg-white p-10 shadow-lg">
 
         <h2 className="mb-6 text-3xl font-bold text-[#0B1727]">
@@ -301,111 +346,128 @@ export default function Admin() {
 
         <div className="space-y-4">
 
-          {investidores.map((investidor) => (
+          {investidores.map(
+            (investidor) => (
 
-            <div
-              key={investidor.id}
-              className="rounded-xl border p-5"
-            >
+              <div
+                key={investidor.id}
+                className="rounded-xl border p-5"
+              >
 
-              <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between">
 
-                <div>
+                  <div>
 
-                  <h3 className="text-xl font-bold text-[#0B1727]">
-                    {investidor.nome}
-                  </h3>
+                    <h3 className="text-xl font-bold text-[#0B1727]">
+                      {
+                        investidor.nome
+                      }
+                    </h3>
 
-                  <p className="text-gray-500">
-  {investidor.email}
-</p>
+                    <p className="text-gray-500">
+                      {
+                        investidor.email
+                      }
+                    </p>
 
-<p className="text-gray-500">
-  {investidor.telefone}
-</p>
+                    <p className="text-gray-500">
+                      {
+                        investidor.telefone
+                      }
+                    </p>
+
+                  </div>
+
+                  <div className="text-right">
+
+                    <p className="text-gray-700">
+
+                      <strong>
+                        Patrimônio:
+                      </strong>{" "}
+
+                      R$ {
+                        formatarValor(
+                          investidor.patrimonio
+                        )
+                      }
+
+                    </p>
+
+                    <p className="text-gray-700">
+
+                      <strong>
+                        Lucro:
+                      </strong>{" "}
+
+                      R$ {
+                        formatarValor(
+                          investidor.lucro
+                        )
+                      }
+
+                    </p>
+
+                    <p className="text-gray-700">
+
+                      <strong>
+                        Rentabilidade:
+                      </strong>{" "}
+
+                      {
+                        Number(
+                          investidor.rentabilidade
+                        ).toFixed(2)
+                      }%
+
+                    </p>
+
+                  </div>
 
                 </div>
 
-                <div className="text-right">
+                <div className="mt-4">
 
-                  <p className="text-gray-700">
-                    <strong>Patrimônio:</strong>{" "}
-                    R$ {
-                      investidor.valor_investido
-                    }
-                  </p>
+                  <button
+                    onClick={() => {
 
-                  <p className="text-gray-700">
-                    <strong>Lucro:</strong>{" "}
-                    R$ {
-                      investidor.lucro_mensal
-                    }
-                  </p>
-
-                  <p className="text-gray-700">
-                    <strong>Rentabilidade:</strong>{" "}
-                    {
-                      investidor.rentabilidade
-                    }%
-                  </p>
-
-                </div>
-
-              </div>
-
-              <div className="mt-4">
-
-                <button
-                  onClick={() => {
-
-                    setEditandoId(
-                      investidor.id
-                    );
-
-                    setNome(
-                      investidor.nome
-                    );
-
-                    setEmail(
-                      investidor.email
-                    );
-
-                    setSenha(
-                      investidor.senha
-                    );
-
-                    setTelefone(
-  investidor.telefone
-);
-
-                    setValorInvestido(
-                      investidor.valor_investido
-                    );
-
-                    setLucroMensal(
-                      investidor.lucro_mensal
-                    );
-
-                    setRentabilidade(
-                      investidor.rentabilidade
-                    );
-                  }}
-                  className="rounded-lg bg-blue-600 px-4 py-2 text-white"
-                >
-                  Editar
-                </button>
-
-                <button
-                  onClick={async () => {
-
-                    const confirmar =
-                      confirm(
-                        "Deseja excluir este investidor?"
+                      setEditandoId(
+                        investidor.id
                       );
 
-                    if (!confirmar) return;
+                      setNome(
+                        investidor.nome
+                      );
 
-                    const { error } =
+                      setEmail(
+                        investidor.email
+                      );
+
+                      setSenha(
+                        investidor.senha
+                      );
+
+                      setTelefone(
+                        investidor.telefone
+                      );
+
+                    }}
+                    className="rounded-lg bg-blue-600 px-4 py-2 text-white"
+                  >
+                    Editar
+                  </button>
+
+                  <button
+                    onClick={async () => {
+
+                      const confirmar =
+                        confirm(
+                          "Deseja excluir este investidor?"
+                        );
+
+                      if (!confirmar)
+                        return;
+
                       await supabase
                         .from(
                           "evpatrimonial_investidores"
@@ -416,30 +478,20 @@ export default function Admin() {
                           investidor.id
                         );
 
-                    if (error) {
-                      console.log(error);
-                      alert(
-                        "Erro ao excluir"
-                      );
-                      return;
-                    }
+                      carregarInvestidores();
 
-                    alert(
-                      "Investidor excluído!"
-                    );
+                    }}
+                    className="ml-3 rounded-lg bg-red-600 px-4 py-2 text-white"
+                  >
+                    Excluir
+                  </button>
 
-                    carregarInvestidores();
-                  }}
-                  className="ml-3 rounded-lg bg-red-600 px-4 py-2 text-white"
-                >
-                  Excluir
-                </button>
+                </div>
 
               </div>
 
-            </div>
-
-          ))}
+            )
+          )}
 
         </div>
 

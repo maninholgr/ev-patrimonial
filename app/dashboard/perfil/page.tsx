@@ -26,78 +26,80 @@ export default function Perfil() {
     useState<any>(null);
 
   const [patrimonio, setPatrimonio] =
-  useState(0);
+    useState(0);
 
-useEffect(() => {
+  useEffect(() => {
 
-  async function carregarPerfil() {
+    async function carregarPerfil() {
 
-    const investidorStorage =
-      localStorage.getItem(
-        "investidor"
+      const investidorStorage =
+        localStorage.getItem(
+          "investidor"
+        );
+
+      if (!investidorStorage) {
+
+        router.push("/");
+
+        return;
+      }
+
+      const investidorParse =
+        JSON.parse(
+          investidorStorage
+        );
+
+      setInvestidor(
+        investidorParse
       );
 
-    if (!investidorStorage) {
+      const {
+        data: movimentacoes,
+      } = await supabase
+        .from(
+          "evpatrimonial_movimentacoes"
+        )
+        .select("*")
+        .eq(
+          "investidor_id",
+          investidorParse.id
+        );
 
-      router.push("/");
+      let total = 0;
 
-      return;
+      movimentacoes?.forEach(
+        (mov) => {
+
+          if (
+            mov.tipo === "aporte" ||
+            mov.tipo === "rendimento"
+          ) {
+
+            total += Number(
+              mov.valor
+            );
+          }
+
+          if (
+            mov.tipo === "saque" ||
+            mov.tipo === "taxa"
+          ) {
+
+            total -= Number(
+              mov.valor
+            );
+          }
+
+        }
+      );
+
+      setPatrimonio(total);
+
     }
 
-    const investidorParse =
-      JSON.parse(
-        investidorStorage
-      );
+    carregarPerfil();
 
-    setInvestidor(
-      investidorParse
-    );
-
-    const {
-      data: movimentacoes,
-    } = await supabase
-      .from(
-        "evpatrimonial_movimentacoes"
-      )
-      .select("*")
-      .eq(
-        "investidor_id",
-        investidorParse.id
-      );
-
-    let total = 0;
-
-    movimentacoes?.forEach(
-      (mov) => {
-
-        if (
-          mov.tipo === "aporte" ||
-          mov.tipo === "rendimento"
-        ) {
-          total += Number(
-            mov.valor
-          );
-        }
-
-        if (
-          mov.tipo === "saque" ||
-          mov.tipo === "taxa"
-        ) {
-          total -= Number(
-            mov.valor
-          );
-        }
-
-      }
-    );
-
-    setPatrimonio(total);
-
-  }
-
-  carregarPerfil();
-
-}, []);
+  }, []);
 
   function sair() {
 
@@ -232,7 +234,17 @@ useEffect(() => {
               <p className="text-3xl font-bold text-green-600">
 
                 R$ {
-                  patrimonio
+                  Number(
+                    Number(
+                      patrimonio
+                    ).toFixed(2)
+                  ).toLocaleString(
+                    "pt-BR",
+                    {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    }
+                  )
                 }
 
               </p>

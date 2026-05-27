@@ -1,65 +1,103 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { supabase } from "../lib/supabase";
 
 export default function Home() {
+
+  const router = useRouter();
+
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+
+  async function fazerLogin(e: any) {
+
+    e.preventDefault();
+
+    const { data, error } = await supabase
+      .from("evpatrimonial_investidores")
+      .select("*")
+      .eq("email", email)
+      .eq("senha", senha)
+      .single();
+
+    if (data) {
+
+      localStorage.setItem(
+        "investidor",
+        JSON.stringify(data)
+      );
+
+      router.push("/dashboard");
+
+    } else {
+
+      alert("E-mail ou senha inválidos");
+
+      console.log(error);
+    }
+  }
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+    <main className="flex min-h-screen items-center justify-center bg-[#0B1727]">
+
+      <div className="w-full max-w-md rounded-2xl bg-white p-10 shadow-2xl">
+
+        <h1 className="mb-2 text-center text-4xl font-bold text-[#0B1727]">
+          EV Patrimonial
+        </h1>
+
+        <p className="mb-8 text-center text-gray-500">
+          Acesse sua conta
+        </p>
+
+        <form
+          onSubmit={fazerLogin}
+          className="space-y-5"
+        >
+
+          <div>
+            <label className="mb-2 block text-sm font-medium text-gray-700">
+              E-mail
+            </label>
+
+            <input
+              type="email"
+              placeholder="Digite seu e-mail"
+              value={email}
+              onChange={(e) =>
+                setEmail(e.target.value)
+              }
+              className="w-full rounded-lg border border-gray-300 p-3 outline-none transition focus:border-[#0B1727]"
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+          </div>
+
+          <div>
+            <label className="mb-2 block text-sm font-medium text-gray-700">
+              Senha
+            </label>
+
+            <input
+              type="password"
+              placeholder="Digite sua senha"
+              value={senha}
+              onChange={(e) =>
+                setSenha(e.target.value)
+              }
+              className="w-full rounded-lg border border-gray-300 p-3 outline-none transition focus:border-[#0B1727]"
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="w-full rounded-lg bg-[#0B1727] p-3 font-semibold text-white transition hover:opacity-90"
           >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+            Entrar
+          </button>
+
+        </form>
+      </div>
+    </main>
   );
 }

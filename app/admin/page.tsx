@@ -10,7 +10,8 @@ export default function Admin() {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
-
+  const [telefone, setTelefone] =
+  useState("");
   const [valorInvestido, setValorInvestido] = useState("");
   const [lucroMensal, setLucroMensal] = useState("");
   const [rentabilidade, setRentabilidade] = useState("");
@@ -121,6 +122,7 @@ export default function Admin() {
           nome,
           email,
           senha,
+          telefone,
           valor_investido:
             valorInvestido,
           lucro_mensal:
@@ -148,6 +150,7 @@ export default function Admin() {
             nome,
             email,
             senha,
+            telefone,
             valor_investido:
               valorInvestido,
             lucro_mensal:
@@ -168,7 +171,7 @@ export default function Admin() {
     setNome("");
     setEmail("");
     setSenha("");
-
+    setTelefone("");
     setValorInvestido("");
     setLucroMensal("");
     setRentabilidade("");
@@ -228,6 +231,18 @@ export default function Admin() {
             }
             className="w-full rounded-lg border border-gray-300 p-3 text-black placeholder:text-gray-500"
           />
+
+          <input
+  type="text"
+  placeholder="Telefone"
+  value={telefone}
+  onChange={(e) =>
+    setTelefone(
+      e.target.value
+    )
+  }
+  className="w-full rounded-lg border border-gray-300 p-3 text-black placeholder:text-gray-500"
+/>
 
           <input
             type="number"
@@ -302,8 +317,12 @@ export default function Admin() {
                   </h3>
 
                   <p className="text-gray-500">
-                    {investidor.email}
-                  </p>
+  {investidor.email}
+</p>
+
+<p className="text-gray-500">
+  {investidor.telefone}
+</p>
 
                 </div>
 
@@ -354,6 +373,10 @@ export default function Admin() {
                     setSenha(
                       investidor.senha
                     );
+
+                    setTelefone(
+  investidor.telefone
+);
 
                     setValorInvestido(
                       investidor.valor_investido

@@ -106,15 +106,19 @@ export default function Dashboard() {
       );
 
       const descricao =
-        ultimoRendimento.descricao || "";
+  (
+    ultimoRendimento.descricao || ""
+  ).replace(",", ".");
 
       const match =
-        descricao.match(/\d+/);
+  descricao.match(
+    /\d+(\.\d+)?/
+  );
 
       if (match) {
 
         setRentabilidade(
-          Number(match[0])
+          parseFloat(match[0])
         );
       }
     }

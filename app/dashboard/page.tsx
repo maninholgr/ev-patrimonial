@@ -535,7 +535,17 @@ export default function Dashboard() {
                       `}
                     >
 
-                      R$ {movimentacao.valor}
+                      R$ {
+  Number(
+    mov.valor
+  ).toLocaleString(
+    "pt-BR",
+    {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }
+  )
+}
 
                     </td>
 

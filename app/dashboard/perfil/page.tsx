@@ -1,5 +1,7 @@
 "use client";
 
+import { supabase } from "@/lib/supabase";
+
 import {
   useEffect,
   useState,
@@ -23,7 +25,12 @@ export default function Perfil() {
   const [investidor, setInvestidor] =
     useState<any>(null);
 
-  useEffect(() => {
+  const [patrimonio, setPatrimonio] =
+  useState(0);
+
+useEffect(() => {
+
+  async function carregarPerfil() {
 
     const investidorStorage =
       localStorage.getItem(
@@ -37,13 +44,60 @@ export default function Perfil() {
       return;
     }
 
-    setInvestidor(
+    const investidorParse =
       JSON.parse(
         investidorStorage
-      )
+      );
+
+    setInvestidor(
+      investidorParse
     );
 
-  }, []);
+    const {
+      data: movimentacoes,
+    } = await supabase
+      .from(
+        "evpatrimonial_movimentacoes"
+      )
+      .select("*")
+      .eq(
+        "investidor_id",
+        investidorParse.id
+      );
+
+    let total = 0;
+
+    movimentacoes?.forEach(
+      (mov) => {
+
+        if (
+          mov.tipo === "aporte" ||
+          mov.tipo === "rendimento"
+        ) {
+          total += Number(
+            mov.valor
+          );
+        }
+
+        if (
+          mov.tipo === "saque" ||
+          mov.tipo === "taxa"
+        ) {
+          total -= Number(
+            mov.valor
+          );
+        }
+
+      }
+    );
+
+    setPatrimonio(total);
+
+  }
+
+  carregarPerfil();
+
+}, []);
 
   function sair() {
 
@@ -178,7 +232,7 @@ export default function Perfil() {
               <p className="text-3xl font-bold text-green-600">
 
                 R$ {
-                  investidor.valor_investido
+                  patrimonio
                 }
 
               </p>

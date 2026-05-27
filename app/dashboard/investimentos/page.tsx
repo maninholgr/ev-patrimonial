@@ -163,7 +163,15 @@ export default function Investimentos() {
           </p>
 
           <h2 className="mt-3 text-5xl font-bold">
-            R$ {patrimonio}
+            {`R$ ${Number(
+  patrimonio
+).toLocaleString(
+  "pt-BR",
+  {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }
+)}`}
           </h2>
 
         </div>
@@ -253,9 +261,15 @@ export default function Investimentos() {
                     `}
                   >
 
-                    R$ {
-                      movimentacao.valor
-                    }
+                   {`R$ ${Number(
+  movimentacao.valor
+).toLocaleString(
+  "pt-BR",
+  {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }
+)}`}
 
                   </div>
 

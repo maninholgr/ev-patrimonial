@@ -274,7 +274,15 @@ export default function Dashboard() {
             </p>
 
             <h2 className="mt-2 text-3xl font-bold">
-              R$ {patrimonioAutomatico}
+              R$ {
+  patrimonioAutomatico.toLocaleString(
+    "pt-BR",
+    {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }
+  )
+}
             </h2>
 
           </div>
@@ -286,7 +294,15 @@ export default function Dashboard() {
             </p>
 
             <h2 className="mt-2 text-3xl font-bold">
-              R$ {lucroMensal}
+              R$ {
+  lucroMensal.toLocaleString(
+    "pt-BR",
+    {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }
+  )
+}
             </h2>
 
           </div>
@@ -362,8 +378,16 @@ export default function Dashboard() {
                         <td className="p-3 text-green-600">
 
                           R$ {
-                            movimentacao.valor
-                          }
+  Number(
+    movimentacao.valor
+  ).toLocaleString(
+    "pt-BR",
+    {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }
+  )
+}
 
                         </td>
 

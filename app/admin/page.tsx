@@ -33,28 +33,23 @@ export default function Admin() {
 
   useEffect(() => {
 
-  if (
-    typeof window ===
-    "undefined"
-  ) return;
+    const admin =
+      localStorage.getItem(
+        "admin"
+      );
 
-  const admin =
-    localStorage.getItem(
-      "admin"
-    );
+    if (admin !== "logado") {
 
-  if (admin !== "logado") {
+      router.push(
+        "/admin/login"
+      );
 
-    router.push(
-      "/admin/login"
-    );
+      return;
+    }
 
-    return;
-  }
+    carregarInvestidores();
 
-  carregarInvestidores();
-
-}, []);
+  }, []);
 
   async function carregarInvestidores() {
 
@@ -68,7 +63,9 @@ export default function Admin() {
       .select("*");
 
     if (error) {
+
       console.log(error);
+
       return;
     }
 
@@ -254,14 +251,6 @@ export default function Admin() {
     );
   }
 
-  if (
-  typeof window ===
-  "undefined"
-) {
-
-  return null;
-}
-
   return (
     <main className="min-h-screen bg-[#F4F7FA] p-10">
 
@@ -275,35 +264,35 @@ export default function Admin() {
 
         <div className="mb-6 flex gap-3">
 
-  <button
-    onClick={() =>
-      router.push(
-        "/admin/movimentacoes"
-      )
-    }
-    className="rounded-lg bg-[#0B1727] px-5 py-3 text-white transition hover:opacity-90"
-  >
-    Ir para Movimentações
-  </button>
+          <button
+            onClick={() =>
+              router.push(
+                "/admin/movimentacoes"
+              )
+            }
+            className="rounded-lg bg-[#0B1727] px-5 py-3 text-white transition hover:opacity-90"
+          >
+            Ir para Movimentações
+          </button>
 
-  <button
-    onClick={() => {
+          <button
+            onClick={() => {
 
-      localStorage.removeItem(
-        "admin"
-      );
+              localStorage.removeItem(
+                "admin"
+              );
 
-      router.push(
-        "/admin/login"
-      );
+              router.push(
+                "/admin/login"
+              );
 
-    }}
-    className="rounded-lg bg-red-500 px-5 py-3 text-white transition hover:bg-red-600"
-  >
-    Sair
-  </button>
+            }}
+            className="rounded-lg bg-red-500 px-5 py-3 text-white transition hover:bg-red-600"
+          >
+            Sair
+          </button>
 
-  </div>
+        </div>
 
         <div className="space-y-5">
 
@@ -380,7 +369,7 @@ export default function Admin() {
 
         <div className="space-y-4">
 
-          {investidores?.map(
+          {investidores.map(
             (investidor) => (
 
               <div

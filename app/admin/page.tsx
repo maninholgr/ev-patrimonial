@@ -33,23 +33,28 @@ export default function Admin() {
 
   useEffect(() => {
 
-    const admin =
-      localStorage.getItem(
-        "admin"
-      );
+  if (
+    typeof window ===
+    "undefined"
+  ) return;
 
-    if (admin !== "logado") {
+  const admin =
+    localStorage.getItem(
+      "admin"
+    );
 
-      router.push(
-        "/admin/login"
-      );
+  if (admin !== "logado") {
 
-      return;
-    }
+    router.push(
+      "/admin/login"
+    );
 
-    carregarInvestidores();
+    return;
+  }
 
-  }, []);
+  carregarInvestidores();
+
+}, []);
 
   async function carregarInvestidores() {
 
@@ -248,6 +253,14 @@ export default function Admin() {
       }
     );
   }
+
+  if (
+  typeof window ===
+  "undefined"
+) {
+
+  return null;
+}
 
   return (
     <main className="min-h-screen bg-[#F4F7FA] p-10">

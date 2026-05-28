@@ -63,9 +63,7 @@ export default function Admin() {
       .select("*");
 
     if (error) {
-
       console.log(error);
-
       return;
     }
 
@@ -264,35 +262,35 @@ export default function Admin() {
 
         <div className="mb-6 flex gap-3">
 
-          <button
-            onClick={() =>
-              router.push(
-                "/admin/movimentacoes"
-              )
-            }
-            className="rounded-lg bg-[#0B1727] px-5 py-3 text-white transition hover:opacity-90"
-          >
-            Ir para Movimentações
-          </button>
+  <button
+    onClick={() =>
+      router.push(
+        "/admin/movimentacoes"
+      )
+    }
+    className="rounded-lg bg-[#0B1727] px-5 py-3 text-white transition hover:opacity-90"
+  >
+    Ir para Movimentações
+  </button>
 
-          <button
-            onClick={() => {
+  <button
+    onClick={() => {
 
-              localStorage.removeItem(
-                "admin"
-              );
+      localStorage.removeItem(
+        "admin"
+      );
 
-              router.push(
-                "/admin/login"
-              );
+      router.push(
+        "/admin/login"
+      );
 
-            }}
-            className="rounded-lg bg-red-500 px-5 py-3 text-white transition hover:bg-red-600"
-          >
-            Sair
-          </button>
+    }}
+    className="rounded-lg bg-red-500 px-5 py-3 text-white transition hover:bg-red-600"
+  >
+    Sair
+  </button>
 
-        </div>
+  </div>
 
         <div className="space-y-5">
 

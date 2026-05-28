@@ -380,7 +380,7 @@ export default function Admin() {
 
         <div className="space-y-4">
 
-          {investidores.map(
+          {investidores?.map(
             (investidor) => (
 
               <div

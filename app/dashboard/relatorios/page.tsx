@@ -10,13 +10,14 @@ import {
 } from "next/navigation";
 
 import {
-  ArrowDownCircle,
-  ArrowUpCircle,
+  FileText,
+  Download,
+  TrendingUp,
 } from "lucide-react";
 
 import { supabase } from "../../../lib/supabase";
 
-export default function Investimentos() {
+export default function Relatorios() {
 
   const router = useRouter();
 
@@ -26,7 +27,7 @@ export default function Investimentos() {
   const [movimentacoes, setMovimentacoes] =
     useState<any[]>([]);
 
-  const [patrimonio, setPatrimonio] =
+  const [totalRendimentos, setTotalRendimentos] =
     useState(0);
 
   useEffect(() => {
@@ -72,23 +73,30 @@ export default function Investimentos() {
           "investidor_id",
           investidorId
         )
-        .order("created_at", {
-          ascending: false,
-        });
+        .order(
+          "created_at",
+          {
+            ascending: false,
+          }
+        );
 
     if (error) {
+
       console.log(error);
+
       return;
     }
 
-    setMovimentacoes(data || []);
+    setMovimentacoes(
+      data || []
+    );
 
-    calcularPatrimonio(
+    calcularRendimentos(
       data || []
     );
   }
 
-  function calcularPatrimonio(
+  function calcularRendimentos(
     movimentacoes: any[]
   ) {
 
@@ -99,25 +107,19 @@ export default function Investimentos() {
 
         if (
           movimentacao.tipo ===
-            "aporte" ||
-          movimentacao.tipo ===
-            "rendimento"
+          "rendimento"
         ) {
 
           total += Number(
-            movimentacao.valor
-          );
-
-        } else {
-
-          total -= Number(
             movimentacao.valor
           );
         }
       }
     );
 
-    setPatrimonio(total);
+    setTotalRendimentos(
+      total
+    );
   }
 
   function formatarValor(
@@ -149,11 +151,11 @@ export default function Investimentos() {
           <div>
 
             <h1 className="text-4xl font-bold text-[#0B1727]">
-              Investimentos
+              Relatórios
             </h1>
 
             <p className="mt-2 text-gray-500">
-              Acompanhe sua carteira financeira
+              Resumo financeiro da sua conta
             </p>
 
           </div>
@@ -169,125 +171,178 @@ export default function Investimentos() {
 
         </div>
 
-        {/* CARD */}
+        {/* CARDS */}
 
-        <div className="mb-10 rounded-2xl bg-[#0B1727] p-8 text-white shadow-lg">
+        <div className="grid gap-6 md:grid-cols-3">
 
-          <p className="text-lg opacity-70">
-            Patrimônio Atual
-          </p>
+          {/* RENDIMENTOS */}
 
-          <h2 className="mt-3 text-5xl font-bold">
+          <div className="rounded-2xl bg-white p-6 shadow-lg">
 
-            R$ {
-              formatarValor(
-                patrimonio
-              )
-            }
+            <div className="mb-4 flex items-center gap-3">
 
-          </h2>
+              <TrendingUp
+                className="text-green-600"
+              />
+
+              <p className="font-semibold text-[#0B1727]">
+                Rendimentos Totais
+              </p>
+
+            </div>
+
+            <h2 className="text-3xl font-bold text-green-600">
+
+              R$ {
+                formatarValor(
+                  totalRendimentos
+                )
+              }
+
+            </h2>
+
+          </div>
+
+          {/* MOVIMENTAÇÕES */}
+
+          <div className="rounded-2xl bg-white p-6 shadow-lg">
+
+            <div className="mb-4 flex items-center gap-3">
+
+              <FileText
+                className="text-[#0B1727]"
+              />
+
+              <p className="font-semibold text-[#0B1727]">
+                Movimentações
+              </p>
+
+            </div>
+
+            <h2 className="text-3xl font-bold text-[#0B1727]">
+
+              {
+                movimentacoes.length
+              }
+
+            </h2>
+
+          </div>
+
+          {/* EXPORTAR */}
+
+          <div className="rounded-2xl bg-white p-6 shadow-lg">
+
+            <div className="mb-4 flex items-center gap-3">
+
+              <Download
+                className="text-blue-600"
+              />
+
+              <p className="font-semibold text-[#0B1727]">
+                Exportação
+              </p>
+
+            </div>
+
+            <button
+              onClick={() =>
+                window.print()
+              }
+              className="mt-3 rounded-lg bg-blue-600 px-4 py-2 text-white transition hover:bg-blue-700"
+            >
+              Baixar Relatório
+            </button>
+
+          </div>
 
         </div>
 
-        {/* MOVIMENTAÇÕES */}
+        {/* TABELA */}
 
-        <div className="rounded-2xl bg-white p-8 shadow-lg">
+        <div className="mt-10 rounded-2xl bg-white p-8 shadow-lg">
 
           <h2 className="mb-6 text-3xl font-bold text-[#0B1727]">
-            Histórico Financeiro
+            Histórico Completo
           </h2>
 
-          <div className="space-y-4">
+          <table className="w-full">
 
-            {movimentacoes.map(
-              (movimentacao) => (
+            <thead>
 
-                <div
-                  key={movimentacao.id}
-                  className="flex items-center justify-between rounded-xl border border-gray-200 p-5"
-                >
+              <tr className="border-b">
 
-                  <div className="flex items-center gap-4">
+                <th className="p-4 text-left text-gray-700">
+                  Tipo
+                </th>
 
-                    <div
-                      className={`rounded-full p-3 text-white
+                <th className="p-4 text-left text-gray-700">
+                  Valor
+                </th>
 
-                        ${
-                          movimentacao.tipo ===
-                            "aporte" ||
-                          movimentacao.tipo ===
-                            "rendimento"
+                <th className="p-4 text-left text-gray-700">
+                  Descrição
+                </th>
 
-                            ? "bg-green-600"
+              </tr>
 
-                            : "bg-red-500"
-                        }
+            </thead>
 
-                      `}
-                    >
+            <tbody>
 
-                      {
-                        movimentacao.tipo ===
-                          "aporte" ||
-                        movimentacao.tipo ===
-                          "rendimento"
+              {movimentacoes.map(
+                (movimentacao) => (
 
-                          ? (
-                            <ArrowUpCircle />
-                          ) : (
-                            <ArrowDownCircle />
-                          )
-                      }
-
-                    </div>
-
-                    <div>
-
-                      <p className="font-semibold capitalize text-[#0B1727]">
-                        {movimentacao.tipo}
-                      </p>
-
-                      <p className="text-sm text-gray-500">
-                        {
-                          movimentacao.descricao
-                        }
-                      </p>
-
-                    </div>
-
-                  </div>
-
-                  <div
-                    className={`text-xl font-bold
-
-                      ${
-                        movimentacao.tipo ===
-                          "aporte" ||
-                        movimentacao.tipo ===
-                          "rendimento"
-
-                          ? "text-green-600"
-
-                          : "text-red-500"
-                      }
-
-                    `}
+                  <tr
+                    key={
+                      movimentacao.id
+                    }
+                    className="border-b"
                   >
 
-                    R$ {
-                      formatarValor(
-                        movimentacao.valor
-                      )
-                    }
+                    <td className="p-4 capitalize text-gray-800">
 
-                  </div>
+                      {
+                        movimentacao.tipo
+                      }
 
-                </div>
+                    </td>
 
-              )
-            )}
+                    <td
+                      className={`p-4 font-semibold ${
+                        movimentacao.tipo ===
+                          "aporte" ||
+                        movimentacao.tipo ===
+                          "rendimento"
+                          ? "text-green-600"
+                          : "text-red-500"
+                      }`}
+                    >
 
-          </div>
+                      R$ {
+                        formatarValor(
+                          movimentacao.valor
+                        )
+                      }
+
+                    </td>
+
+                    <td className="p-4 text-gray-800">
+
+                      {
+                        movimentacao.descricao
+                      }
+
+                    </td>
+
+                  </tr>
+
+                )
+              )}
+
+            </tbody>
+
+          </table>
 
         </div>
 

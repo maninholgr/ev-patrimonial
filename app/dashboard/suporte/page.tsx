@@ -120,7 +120,7 @@ export default function Suporte() {
               </h3>
 
               <p className="text-gray-600">
-                suporte@evinvestimentos.com.br
+                edimilsonvc@gmail.com
               </p>
 
             </div>

@@ -8,6 +8,8 @@ import {
   Wallet,
   FileText,
   User,
+  Headset,
+  LineChart as MarketIcon,
 } from "lucide-react";
 
 import {
@@ -232,6 +234,30 @@ export default function Dashboard() {
             <User size={20} />
             Perfil
           </button>
+
+          <button
+  onClick={() =>
+    router.push(
+      "/dashboard/suporte"
+    )
+  }
+  className="flex w-full items-center gap-3 rounded-lg p-3 text-left transition hover:bg-white/10"
+>
+  <Headset size={20} />
+  Suporte
+</button>
+
+<button
+  onClick={() =>
+    router.push(
+      "/dashboard/mercado"
+    )
+  }
+  className="flex w-full items-center gap-3 rounded-lg p-3 text-left transition hover:bg-white/10"
+>
+  <MarketIcon size={20} />
+  Mercado
+</button>
 
         </nav>
 

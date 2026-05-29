@@ -45,7 +45,7 @@ export default function Home() {
       <div className="w-full max-w-md rounded-2xl bg-white p-10 shadow-2xl">
 
         <h1 className="mb-2 text-center text-4xl font-bold text-[#0B1727]">
-          EV Investimentos
+          Goldusd Investimentos
         </h1>
 
         <p className="mb-8 text-center text-gray-500">

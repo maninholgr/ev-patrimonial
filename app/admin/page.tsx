@@ -25,6 +25,24 @@ export default function Admin() {
   const [telefone, setTelefone] =
     useState("");
 
+  const [dataNascimento, setDataNascimento] =
+  useState("");
+
+const [rg, setRg] =
+  useState("");
+
+const [cpf, setCpf] =
+  useState("");
+
+const [endereco, setEndereco] =
+  useState("");
+
+const [chavePix, setChavePix] =
+  useState("");
+
+const [corretor, setCorretor] =
+  useState("");  
+
   const [investidores, setInvestidores] =
     useState<any[]>([]);
 
@@ -167,11 +185,17 @@ export default function Admin() {
             "evpatrimonial_investidores"
           )
           .update({
-            nome,
-            email,
-            senha,
-            telefone,
-          })
+  nome,
+  email,
+  senha,
+  telefone,
+  data_nascimento: dataNascimento,
+  rg,
+  cpf,
+  endereco: endereco,
+  chave_pix: chavePix,
+  corretor,
+})
           .eq(
             "id",
             editandoId
@@ -202,13 +226,19 @@ export default function Admin() {
             "evpatrimonial_investidores"
           )
           .insert([
-            {
-              nome,
-              email,
-              senha,
-              telefone,
-            },
-          ]);
+  {
+    nome,
+    email,
+    senha,
+    telefone,
+    data_nascimento: dataNascimento,
+    rg,
+    cpf,
+    endereco,
+    chave_pix: chavePix,
+    corretor,
+  },
+]);
 
       if (error) {
 
@@ -230,6 +260,12 @@ export default function Admin() {
     setEmail("");
     setSenha("");
     setTelefone("");
+    setDataNascimento("");
+setRg("");
+setCpf("");
+setEndereco("");
+setChavePix("");
+setCorretor("");
 
     carregarInvestidores();
   }
@@ -341,6 +377,65 @@ export default function Admin() {
             }
             className="w-full rounded-lg border border-gray-300 p-3 text-black"
           />
+
+          <input
+  type="date"
+  value={dataNascimento}
+  onChange={(e) =>
+    setDataNascimento(e.target.value)
+  }
+  className="w-full rounded-lg border border-gray-300 p-3 text-black"
+/>
+
+<input
+  type="text"
+  placeholder="RG"
+  value={rg}
+  onChange={(e) =>
+    setRg(e.target.value)
+  }
+  className="w-full rounded-lg border border-gray-300 p-3 text-black"
+/>
+
+<input
+  type="text"
+  placeholder="CPF"
+  value={cpf}
+  onChange={(e) =>
+    setCpf(e.target.value)
+  }
+  className="w-full rounded-lg border border-gray-300 p-3 text-black"
+/>
+
+<input
+  type="text"
+  placeholder="Endereço"
+  value={endereco}
+  onChange={(e) =>
+    setEndereco(e.target.value)
+  }
+  className="w-full rounded-lg border border-gray-300 p-3 text-black"
+/>
+
+<input
+  type="text"
+  placeholder="Chave PIX"
+  value={chavePix}
+  onChange={(e) =>
+    setChavePix(e.target.value)
+  }
+  className="w-full rounded-lg border border-gray-300 p-3 text-black"
+/>
+
+<input
+  type="text"
+  placeholder="Corretor"
+  value={corretor}
+  onChange={(e) =>
+    setCorretor(e.target.value)
+  }
+  className="w-full rounded-lg border border-gray-300 p-3 text-black"
+/>
 
           <button
             onClick={
@@ -471,6 +566,30 @@ export default function Admin() {
                       setTelefone(
                         investidor.telefone
                       );
+
+                      setDataNascimento(
+  investidor.data_nascimento || ""
+);
+
+setRg(
+  investidor.rg || ""
+);
+
+setCpf(
+  investidor.cpf || ""
+);
+
+setEndereco(
+  investidor.endereco || ""
+);
+
+setChavePix(
+  investidor.chave_pix || ""
+);
+
+setCorretor(
+  investidor.corretor || ""
+);
 
                     }}
                     className="rounded-lg bg-blue-600 px-4 py-2 text-white"

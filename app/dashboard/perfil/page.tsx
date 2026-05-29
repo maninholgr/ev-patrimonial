@@ -163,7 +163,7 @@ export default function Perfil() {
               </h2>
 
               <p className="text-gray-500">
-                Investidor EV Patrimonial
+                Investidor EV Investimentos
               </p>
 
             </div>

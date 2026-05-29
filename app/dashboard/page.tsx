@@ -182,7 +182,7 @@ export default function Dashboard() {
       <aside className="w-64 bg-[#0B1727] p-6 text-white">
 
         <h1 className="mb-10 text-3xl font-bold">
-          EV Patrimonial
+          EV Investimentos
         </h1>
 
         <nav className="space-y-4">

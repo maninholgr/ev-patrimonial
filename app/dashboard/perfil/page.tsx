@@ -49,9 +49,16 @@ export default function Perfil() {
           investidorStorage
         );
 
-      setInvestidor(
-        investidorParse
-      );
+        const { data: investidorCompleto } =
+  await supabase
+    .from("evpatrimonial_investidores")
+    .select("*")
+    .eq("id", investidorParse.id)
+    .single();
+
+if (investidorCompleto) {
+  setInvestidor(investidorCompleto);
+}
 
       const {
         data: movimentacoes,
@@ -216,6 +223,72 @@ export default function Perfil() {
               </p>
 
             </div>
+
+            <div className="rounded-xl border border-gray-200 p-5">
+  <p className="mb-2 font-semibold text-[#0B1727]">
+    Data de Nascimento
+  </p>
+
+  <p className="text-gray-600">
+    {
+  investidor.data_nascimento
+    ? new Date(
+        investidor.data_nascimento
+      ).toLocaleDateString("pt-BR")
+    : "Não informado"
+}
+  </p>
+</div>
+
+<div className="rounded-xl border border-gray-200 p-5">
+  <p className="mb-2 font-semibold text-[#0B1727]">
+    RG
+  </p>
+
+  <p className="text-gray-600">
+    {investidor.rg || "Não informado"}
+  </p>
+</div>
+
+<div className="rounded-xl border border-gray-200 p-5">
+  <p className="mb-2 font-semibold text-[#0B1727]">
+    CPF
+  </p>
+
+  <p className="text-gray-600">
+    {investidor.cpf || "Não informado"}
+  </p>
+</div>
+
+<div className="rounded-xl border border-gray-200 p-5">
+  <p className="mb-2 font-semibold text-[#0B1727]">
+    Endereço
+  </p>
+
+  <p className="text-gray-600">
+    {investidor.endereco || "Não informado"}
+  </p>
+</div>
+
+<div className="rounded-xl border border-gray-200 p-5">
+  <p className="mb-2 font-semibold text-[#0B1727]">
+    Chave PIX
+  </p>
+
+  <p className="text-gray-600">
+    {investidor.chave_pix || "Não informado"}
+  </p>
+</div>
+
+<div className="rounded-xl border border-gray-200 p-5">
+  <p className="mb-2 font-semibold text-[#0B1727]">
+    Corretor
+  </p>
+
+  <p className="text-gray-600">
+    {investidor.corretor || "Não informado"}
+  </p>
+</div>
 
             <div className="rounded-xl border border-gray-200 p-5 md:col-span-2">
 

@@ -25,18 +25,19 @@ export async function GET() {
       }
     );
 
-    const goldData =
-      await goldResponse.json();
+    const goldDataRaw =
+  await goldResponse.json();
+
+const goldData =
+  JSON.parse(goldDataRaw);
 
     return Response.json({
       btc: btcData.bitcoin.usd,
       eur: eurData.rates.USD,
       ouro: parseFloat(
-        goldData.ounce_price_usd
-      ),
-      atualizado:
-        goldData.gmt_ounce_price_usd_updated,
-    });
+    goldData.ounce_price_usd
+  ),
+});
 
   } catch (error) {
 

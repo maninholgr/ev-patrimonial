@@ -5,20 +5,22 @@ export async function GET() {
       "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd"
     );
 
-    const btcData = await btcResponse.json();
+    const btcData =
+      await btcResponse.json();
 
     const eurResponse = await fetch(
       "https://api.frankfurter.app/latest?from=EUR&to=USD"
     );
 
-    const eurData = await eurResponse.json();
+    const eurData =
+      await eurResponse.json();
 
     const goldResponse = await fetch(
-      "https://www.goldapi.io/api/XAU/USD",
+      "https://goldpricez.com/api/rates/currency/usd/measure/ounce",
       {
         headers: {
-          "x-access-token":
-            process.env.GOLD_API_KEY || "",
+          "X-API-KEY":
+            process.env.GOLDPRICEZ_API_KEY || "",
         },
       }
     );
@@ -29,7 +31,11 @@ export async function GET() {
     return Response.json({
       btc: btcData.bitcoin.usd,
       eur: eurData.rates.USD,
-      ouro: goldData.price,
+      ouro: parseFloat(
+        goldData.ounce_price_usd
+      ),
+      atualizado:
+        goldData.gmt_ounce_price_usd_updated,
     });
 
   } catch (error) {
@@ -38,7 +44,8 @@ export async function GET() {
 
     return Response.json(
       {
-        erro: "Falha ao carregar mercado",
+        erro:
+          "Falha ao carregar mercado",
       },
       {
         status: 500,

@@ -16,7 +16,6 @@ export const metadata: Metadata = {
   title: "Goldusd Investimentos",
   description: "Seu capital em ouro",
   },
-};
 
 export default function RootLayout({
   children,

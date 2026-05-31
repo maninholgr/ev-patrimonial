@@ -15,11 +15,6 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Goldusd Investimentos",
   description: "Seu capital em ouro",
-  manifest: "/manifest.json",
-  icons: {
-    icon: "/icon-192.png",
-    shortcut: "/icon-192.png",
-    apple: "/icon-512.png",
   },
 };
 

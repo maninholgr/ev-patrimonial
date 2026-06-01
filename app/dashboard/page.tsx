@@ -178,10 +178,10 @@ export default function Dashboard() {
   if (!investidor) return null;
 
   return (
-    <main className="flex min-h-screen bg-[#F4F7FA]">
+    <main className="flex flex-col md:flex-row min-h-screen bg-[#F4F7FA]">
 
       {/* MENU */}
-      <aside className="w-64 bg-[#0B1727] p-6 text-white">
+      <aside className="w-full md:w-64 bg-[#0B1727] p-6 text-white">
 
         <h1 className="mb-10 text-3xl font-bold">
           Goldusd Investimentos
@@ -267,13 +267,13 @@ export default function Dashboard() {
       <section className="flex-1 p-8">
 
         {/* TOPO */}
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
 
           <h2 className="text-4xl font-bold text-[#0B1727]">
             Dashboard
           </h2>
 
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col gap-3 md:flex-row md:items-center">
 
             <div className="rounded-full bg-white px-5 py-3 text-black">
               {investidor.nome}
@@ -353,9 +353,10 @@ export default function Dashboard() {
           <h3 className="mb-6 text-2xl font-bold text-[#0B1727]">
             Últimos Rendimentos
           </h3>
-
+        
+        <div className="overflow-x-auto">
           <table className="w-full">
-
+          </div>
             <thead>
 
               <tr className="border-b">

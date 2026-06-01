@@ -181,9 +181,9 @@ export default function Dashboard() {
     <main className="flex flex-col md:flex-row min-h-screen bg-[#F4F7FA]">
 
       {/* MENU */}
-      <aside className="w-full md:w-64 bg-[#0B1727] p-6 text-white">
+      <aside className="hidden md:block w-64 bg-[#0B1727] p-6 text-white">
 
-        <h1 className="mb-10 text-3xl font-bold">
+        <h1 className="mb-6 text-2xl md:text-3xl font-bold">
           Goldusd Investimentos
         </h1>
 
@@ -264,12 +264,18 @@ export default function Dashboard() {
       </aside>
 
       {/* CONTEÚDO */}
-      <section className="flex-1 p-8">
+      <section className="flex-1 p-4 md:p-8 overflow-hidden">
 
         {/* TOPO */}
         <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
 
-          <h2 className="text-4xl font-bold text-[#0B1727]">
+        <button
+  className="mb-4 rounded-lg bg-[#0B1727] px-4 py-2 text-white md:hidden"
+>
+  ☰ Menu
+</button>
+
+          <h2 className="text-3xl md:text-4xl font-bold text-[#0B1727]">
             Dashboard
           </h2>
 
@@ -355,8 +361,7 @@ export default function Dashboard() {
           </h3>
         
         <div className="overflow-x-auto">
-          <table className="w-full">
-          </div>
+          <table className="w-full min-w-[600px]">
             <thead>
 
               <tr className="border-b">
@@ -433,6 +438,7 @@ export default function Dashboard() {
             </tbody>
 
           </table>
+          </div>
 
         </div>
 
@@ -487,8 +493,9 @@ export default function Dashboard() {
           <h3 className="mb-6 text-2xl font-bold text-[#0B1727]">
             Extrato Financeiro
           </h3>
-
-          <table className="w-full">
+        
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[700px]">
 
             <thead>
 
@@ -580,6 +587,7 @@ export default function Dashboard() {
             </tbody>
 
           </table>
+          </div>
 
         </div>
 

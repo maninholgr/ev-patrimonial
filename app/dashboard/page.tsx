@@ -202,12 +202,9 @@ export default function Dashboard() {
         <nav className="space-y-4">
 
          <button
-  onClick={() => setMenuAberto(!menuAberto)}
-  className="mb-4 rounded-lg bg-[#0B1727] px-4 py-2 text-white md:hidden"
->
-  ☰ Menu
-</button>
-
+           onClick={() => router.push("/dashboard")}
+           className="flex w-full items-center gap-3 rounded-lg bg-white/10 p-3 text-left transition hover:bg-white/20"
+         >
             <LayoutDashboard size={20} />
             Dashboard
           </button>

@@ -286,17 +286,17 @@ setCorretor("");
   }
 
   return (
-    <main className="min-h-screen bg-[#F4F7FA] p-10">
+    <main className="min-h-screen bg-[#F4F7FA] p-4 md:p-10">
 
       {/* CADASTRO */}
 
-      <div className="mx-auto max-w-2xl rounded-2xl bg-white p-10 shadow-lg">
+      <div className="mx-auto max-w-2xl rounded-2xl bg-white p-4 md:p-10 shadow-lg">
 
-        <h1 className="mb-8 text-4xl font-bold text-[#0B1727]">
+        <h1 className="mb-6 text-2xl md:text-4xl font-bold text-[#0B1727]">
           Painel Admin
         </h1>
 
-        <div className="mb-6 flex gap-3">
+        <div className="mb-6 flex flex-col gap-3 md:flex-row">
 
   <button
     onClick={() =>
@@ -454,7 +454,7 @@ setCorretor("");
 
       {/* LISTA */}
 
-      <div className="mx-auto mt-10 max-w-5xl rounded-2xl bg-white p-10 shadow-lg">
+      <div className="mx-auto mt-10 max-w-5xl rounded-2xl bg-white p-4 md:p-10 shadow-lg">
 
         <h2 className="mb-6 text-3xl font-bold text-[#0B1727]">
           Investidores Cadastrados
@@ -470,7 +470,7 @@ setCorretor("");
                 className="rounded-xl border p-5"
               >
 
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
 
                   <div>
 
@@ -494,7 +494,7 @@ setCorretor("");
 
                   </div>
 
-                  <div className="text-right">
+                  <div className="text-left md:text-right">
 
                     <p className="text-gray-700">
 
@@ -542,7 +542,7 @@ setCorretor("");
 
                 </div>
 
-                <div className="mt-4">
+                <div className="mt-4 flex flex-col gap-3 md:flex-row">
 
                   <button
                     onClick={() => {
@@ -621,7 +621,7 @@ setCorretor(
                       carregarInvestidores();
 
                     }}
-                    className="ml-3 rounded-lg bg-red-600 px-4 py-2 text-white"
+                    className="rounded-lg bg-red-600 px-4 py-2 text-white"
                   >
                     Excluir
                   </button>

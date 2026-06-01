@@ -140,17 +140,17 @@ export default function Relatorios() {
   if (!investidor) return null;
 
   return (
-    <main className="min-h-screen bg-[#F4F7FA] p-8">
+    <main className="min-h-screen bg-[#F4F7FA] p-4 md:p-8">
 
       <div className="mx-auto max-w-6xl">
 
         {/* TOPO */}
 
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
 
           <div>
 
-            <h1 className="text-4xl font-bold text-[#0B1727]">
+            <h1 className="text-2xl md:text-4xl font-bold text-[#0B1727]">
               Relatórios
             </h1>
 
@@ -191,7 +191,7 @@ export default function Relatorios() {
 
             </div>
 
-            <h2 className="text-3xl font-bold text-green-600">
+            <h2 className="text-2xl md:text-3xl font-bold text-green-600 break-words">
 
               R$ {
                 formatarValor(
@@ -219,7 +219,7 @@ export default function Relatorios() {
 
             </div>
 
-            <h2 className="text-3xl font-bold text-[#0B1727]">
+            <h2 className="text-2xl md:text-3xl font-bold text-[#0B1727]">
 
               {
                 movimentacoes.length
@@ -249,7 +249,7 @@ export default function Relatorios() {
               onClick={() =>
                 window.print()
               }
-              className="mt-3 rounded-lg bg-blue-600 px-4 py-2 text-white transition hover:bg-blue-700"
+              className="mt-3 w-full md:w-auto rounded-lg bg-blue-600 px-4 py-2 text-white transition hover:bg-blue-700"
             >
               Baixar Relatório
             </button>
@@ -260,13 +260,14 @@ export default function Relatorios() {
 
         {/* TABELA */}
 
-        <div className="mt-10 rounded-2xl bg-white p-8 shadow-lg">
+        <div className="mt-10 rounded-2xl bg-white p-4 md:p-8 shadow-lg">
 
           <h2 className="mb-6 text-3xl font-bold text-[#0B1727]">
             Histórico Completo
           </h2>
-
-          <table className="w-full">
+        
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[700px]">
 
             <thead>
 
@@ -343,6 +344,7 @@ export default function Relatorios() {
             </tbody>
 
           </table>
+          </div>
 
         </div>
 

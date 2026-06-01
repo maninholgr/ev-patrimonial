@@ -280,10 +280,11 @@ export default function Dashboard() {
         <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
 
         <button
-  className="mb-4 rounded-lg bg-[#0B1727] px-4 py-2 text-white md:hidden"
->
-  ☰ Menu
-</button>
+         onClick={() => setMenuAberto(!menuAberto)}
+         className="mb-4 rounded-lg bg-[#0B1727] px-4 py-2 text-white md:hidden"
+        >
+         ☰ Menu
+        </button>
 
           <h2 className="text-3xl md:text-4xl font-bold text-[#0B1727]">
             Dashboard

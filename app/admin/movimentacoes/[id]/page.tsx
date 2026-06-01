@@ -302,15 +302,24 @@ export default function MovimentacoesInvestidor() {
 
                   </p>
 
-                  <p className="text-xl font-bold">
+                  <p
+  className={`text-xl font-bold ${
+    movimentacao.tipo === "rendimento"
+      ? "text-green-600"
+      : movimentacao.tipo === "saque" ||
+        movimentacao.tipo === "taxa"
+      ? "text-red-600"
+      : "text-[#0B1727]"
+  }`}
+>
 
-                    R$ {
-                      formatarValor(
-                        movimentacao.valor
-                      )
-                    }
+  R$ {
+    formatarValor(
+      movimentacao.valor
+    )
+  }
 
-                  </p>
+</p>
 
                   <p className="text-gray-700">
 

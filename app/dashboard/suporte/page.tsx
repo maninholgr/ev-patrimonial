@@ -15,17 +15,17 @@ export default function Suporte() {
 
   return (
 
-    <main className="min-h-screen bg-[#F4F7FA] p-8">
+    <main className="min-h-screen bg-[#F4F7FA] p-4 md:p-8">
 
       <div className="mx-auto max-w-5xl">
 
         {/* TOPO */}
 
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
 
           <div>
 
-            <h1 className="text-4xl font-bold text-[#0B1727]">
+            <h1 className="text-2xl md:text-4xl font-bold text-[#0B1727]">
               Suporte
             </h1>
 
@@ -49,9 +49,9 @@ export default function Suporte() {
 
         {/* CARD PRINCIPAL */}
 
-        <div className="rounded-2xl bg-white p-8 shadow-lg">
+        <div className="rounded-2xl bg-white p-4 md:p-8 shadow-lg">
 
-          <div className="mb-8 flex items-center gap-4">
+          <div className="mb-8 flex flex-col items-center text-center gap-4 md:flex-row md:text-left">
 
             <div className="rounded-full bg-green-100 p-4">
 
@@ -99,7 +99,7 @@ export default function Suporte() {
                 href="https://wa.me/5511947463377"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block rounded-lg bg-green-600 px-5 py-3 text-white transition hover:bg-green-700"
+                className="block w-full md:w-auto text-center rounded-lg bg-green-600 px-5 py-3 text-white transition hover:bg-green-700"
               >
                 Falar no WhatsApp
               </a>
@@ -154,7 +154,7 @@ export default function Suporte() {
 
         {/* FAQ */}
 
-        <div className="mt-8 rounded-2xl bg-white p-8 shadow-lg">
+        <div className="mt-8 rounded-2xl bg-white p-4 md:p-8 shadow-lg">
 
           <h2 className="mb-6 text-2xl font-bold text-[#0B1727]">
             Perguntas Frequentes

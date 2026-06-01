@@ -120,17 +120,17 @@ if (investidorCompleto) {
   if (!investidor) return null;
 
   return (
-    <main className="min-h-screen bg-[#F4F7FA] p-8">
+    <main className="min-h-screen bg-[#F4F7FA] p-4 md:p-8">
 
       <div className="mx-auto max-w-4xl">
 
         {/* TOPO */}
 
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
 
           <div>
 
-            <h1 className="text-4xl font-bold text-[#0B1727]">
+            <h1 className="text-2xl md:text-4xl font-bold text-[#0B1727]">
               Meu Perfil
             </h1>
 
@@ -153,9 +153,9 @@ if (investidorCompleto) {
 
         {/* CARD PERFIL */}
 
-        <div className="rounded-2xl bg-white p-10 shadow-lg">
+       <div className="rounded-2xl bg-white p-4 md:p-10 shadow-lg">
 
-          <div className="mb-10 flex items-center gap-5">
+          <div className="mb-10 flex flex-col items-center text-center gap-5 md:flex-row md:text-left">
 
             <div className="flex h-24 w-24 items-center justify-center rounded-full bg-[#0B1727] text-white">
 
@@ -165,7 +165,7 @@ if (investidorCompleto) {
 
             <div>
 
-              <h2 className="text-3xl font-bold text-[#0B1727]">
+              <h2 className="text-2xl md:text-3xl font-bold text-[#0B1727]">
                 {investidor.nome}
               </h2>
 
@@ -304,7 +304,7 @@ if (investidorCompleto) {
 
               </div>
 
-              <p className="text-3xl font-bold text-green-600">
+              <p className="text-2xl md:text-3xl font-bold text-green-600 break-words">
 
                 R$ {
                   Number(

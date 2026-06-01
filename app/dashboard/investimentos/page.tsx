@@ -123,17 +123,17 @@ export default function Investimentos() {
   if (!investidor) return null;
 
   return (
-    <main className="min-h-screen bg-[#F4F7FA] p-8">
+    <main className="min-h-screen bg-[#F4F7FA] p-4 md:p-8">
 
       <div className="mx-auto max-w-6xl">
 
         {/* TOPO */}
 
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
 
           <div>
 
-            <h1 className="text-4xl font-bold text-[#0B1727]">
+            <h1 className="text-2xl md:text-4xl font-bold text-[#0B1727]">
               Investimentos
             </h1>
 
@@ -156,13 +156,13 @@ export default function Investimentos() {
 
         {/* CARD */}
 
-        <div className="mb-10 rounded-2xl bg-[#0B1727] p-8 text-white shadow-lg">
+        <div className="mb-10 rounded-2xl bg-[#0B1727] p-4 md:p-8 text-white shadow-lg">
 
           <p className="text-lg opacity-70">
             Patrimônio Atual
           </p>
 
-          <h2 className="mt-3 text-5xl font-bold">
+          <h2 className="mt-3 text-3xl md:text-5xl font-bold break-words">
             {`R$ ${Number(
   patrimonio
 ).toLocaleString(
@@ -178,7 +178,7 @@ export default function Investimentos() {
 
         {/* MOVIMENTAÇÕES */}
 
-        <div className="rounded-2xl bg-white p-8 shadow-lg">
+        <div className="rounded-2xl bg-white p-4 md:p-8 shadow-lg">
 
           <h2 className="mb-6 text-3xl font-bold text-[#0B1727]">
             Histórico Financeiro
@@ -191,7 +191,7 @@ export default function Investimentos() {
 
                 <div
                   key={movimentacao.id}
-                  className="flex items-center justify-between rounded-xl border border-gray-200 p-5"
+                  className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between rounded-xl border border-gray-200 p-5"
                 >
 
                   <div className="flex items-center gap-4">
@@ -245,7 +245,7 @@ export default function Investimentos() {
                   </div>
 
                   <div
-                    className={`text-xl font-bold
+                    className={`text-lg md:text-xl font-bold
 
                       ${
                         movimentacao.tipo ===

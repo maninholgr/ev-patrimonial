@@ -544,89 +544,96 @@ setCorretor("");
 
                 <div className="mt-4 flex flex-col gap-3 md:flex-row">
 
-                  <button
-                    onClick={() => {
+  <button
+    onClick={() => {
+      setEditandoId(investidor.id);
 
-                      setEditandoId(
-                        investidor.id
-                      );
+      setNome(investidor.nome);
+      setEmail(investidor.email);
+      setSenha(investidor.senha);
+      setTelefone(investidor.telefone);
 
-                      setNome(
-                        investidor.nome
-                      );
+      setDataNascimento(
+        investidor.data_nascimento || ""
+      );
 
-                      setEmail(
-                        investidor.email
-                      );
+      setRg(
+        investidor.rg || ""
+      );
 
-                      setSenha(
-                        investidor.senha
-                      );
+      setCpf(
+        investidor.cpf || ""
+      );
 
-                      setTelefone(
-                        investidor.telefone
-                      );
+      setEndereco(
+        investidor.endereco || ""
+      );
 
-                      setDataNascimento(
-  investidor.data_nascimento || ""
-);
+      setChavePix(
+        investidor.chave_pix || ""
+      );
 
-setRg(
-  investidor.rg || ""
-);
+      setCorretor(
+        investidor.corretor || ""
+      );
+    }}
+    className="rounded-lg bg-blue-600 px-4 py-2 text-white"
+  >
+    Editar
+  </button>
 
-setCpf(
-  investidor.cpf || ""
-);
+  <button
+    onClick={() =>
+      router.push(
+        `/admin/cliente/${investidor.id}`
+      )
+    }
+    className="rounded-lg bg-green-600 px-4 py-2 text-white"
+  >
+    Ver Cliente
+  </button>
 
-setEndereco(
-  investidor.endereco || ""
-);
+  <button
+    onClick={() =>
+      router.push(
+        `/admin/movimentacoes/${investidor.id}`
+      )
+    }
+    className="rounded-lg bg-yellow-600 px-4 py-2 text-white"
+  >
+    Movimentações
+  </button>
 
-setChavePix(
-  investidor.chave_pix || ""
-);
+  <button
+    onClick={async () => {
 
-setCorretor(
-  investidor.corretor || ""
-);
+      const confirmar =
+        confirm(
+          "Deseja excluir este investidor?"
+        );
 
-                    }}
-                    className="rounded-lg bg-blue-600 px-4 py-2 text-white"
-                  >
-                    Editar
-                  </button>
+      if (!confirmar)
+        return;
 
-                  <button
-                    onClick={async () => {
+      await supabase
+        .from(
+          "evpatrimonial_investidores"
+        )
+        .delete()
+        .eq(
+          "id",
+          investidor.id
+        );
 
-                      const confirmar =
-                        confirm(
-                          "Deseja excluir este investidor?"
-                        );
+      carregarInvestidores();
 
-                      if (!confirmar)
-                        return;
+    }}
+    className="rounded-lg bg-red-600 px-4 py-2 text-white"
+  >
+    Excluir
+  </button>
 
-                      await supabase
-                        .from(
-                          "evpatrimonial_investidores"
-                        )
-                        .delete()
-                        .eq(
-                          "id",
-                          investidor.id
-                        );
-
-                      carregarInvestidores();
-
-                    }}
-                    className="rounded-lg bg-red-600 px-4 py-2 text-white"
-                  >
-                    Excluir
-                  </button>
-
-                </div>
+</div>
 
               </div>
 

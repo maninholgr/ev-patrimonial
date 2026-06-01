@@ -98,13 +98,13 @@ export default function Movimentacoes() {
   }
 
   return (
-    <main className="min-h-screen bg-[#F4F7FA] p-10">
+    <main className="min-h-screen bg-[#F4F7FA] p-4 md:p-10">
 
-      <div className="mx-auto max-w-2xl rounded-2xl bg-white p-10 shadow-lg">
+      <div className="mx-auto max-w-2xl rounded-2xl bg-white p-4 md:p-10 shadow-lg">
 
-       <div className="mb-8 flex items-center justify-between">
+       <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
 
-  <h1 className="text-4xl font-bold text-[#0B1727]">
+  <h1 className="text-2xl md:text-4xl font-bold text-[#0B1727]">
     Movimentações Financeiras
   </h1>
 
@@ -112,7 +112,7 @@ export default function Movimentacoes() {
     onClick={() =>
       router.push("/admin")
     }
-    className="rounded-lg bg-[#0B1727] px-5 py-3 text-white transition hover:opacity-90"
+    className="w-full md:w-auto rounded-lg bg-[#0B1727] px-5 py-3 text-white transition hover:opacity-90"
   >
     Voltar
   </button>
@@ -195,6 +195,7 @@ export default function Movimentacoes() {
           />
 
           <textarea
+            rows={4}
             placeholder="Descrição"
             value={descricao}
             onChange={(e) =>

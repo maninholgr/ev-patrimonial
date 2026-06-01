@@ -91,15 +91,15 @@ function irParaMercado() {
 
     <main className="min-h-screen bg-[#020617] text-white">
 
-      <div className="mx-auto max-w-7xl p-8">
+      <div className="mx-auto max-w-7xl p-4 md:p-8">
 
         {/* TOPO */}
 
-        <div className="mb-10 flex items-center justify-between">
+        <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
 
           <div>
 
-            <h1 className="text-4xl font-bold">
+            <h1 className="text-2xl md:text-4xl font-bold">
               Goldusd Investimentos
             </h1>
 
@@ -132,7 +132,7 @@ function irParaMercado() {
               Plataforma Premium
             </span>
 
-            <h2 className="mt-6 text-6xl font-bold leading-tight">
+            <h2 className="mt-6 text-4xl md:text-6xl font-bold leading-tight">
 
               Seu capital
 
@@ -144,7 +144,7 @@ function irParaMercado() {
 
             </h2>
 
-            <p className="mt-6 max-w-xl text-lg text-slate-400">
+            <p className="mt-6 max-w-xl text-base md:text-lg text-slate-400">
 
               Acompanhe seus investimentos,
               patrimônio e os principais
@@ -168,7 +168,7 @@ function irParaMercado() {
 
           {/* CARD DIREITO */}
 
-          <div className="rounded-3xl border border-slate-800 bg-slate-900 p-8">
+          <div className="rounded-3xl border border-slate-800 bg-slate-900 p-4 md:p-8">
 
             <div className="flex items-center justify-between">
 
@@ -178,7 +178,7 @@ function irParaMercado() {
                   Patrimônio Total
                 </p>
 
-                <h3 className="mt-2 text-5xl font-bold">
+                <h3 className="mt-2 text-3xl md:text-5xl font-bold break-words">
                   R$ 1.135,32
                 </h3>
 
@@ -256,12 +256,12 @@ function irParaMercado() {
 
         <div
   ref={mercadoRef}
-  className="mb-6 flex items-center justify-between"
+  className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between"
 >
 
           <div>
 
-            <h2 className="text-4xl font-bold">
+            <h2 className="text-2xl md:text-4xl font-bold">
               Mercado em Tempo Real
             </h2>
 
@@ -271,7 +271,7 @@ function irParaMercado() {
 
           </div>
 
-          <div className="flex flex-col items-end gap-2">
+          <div className="flex flex-col gap-2 md:items-end">
 
   <p className="text-sm text-slate-400">
     Última atualização: {ultimaAtualizacao}
@@ -316,7 +316,7 @@ function irParaMercado() {
               Bitcoin
             </p>
 
-            <h4 className="mt-6 text-4xl font-bold">
+            <h4 className="mt-6 text-2xl md:text-4xl font-bold break-words">
               ${(mercado.btc ?? 0).toLocaleString("en-US")}
             </h4>
 

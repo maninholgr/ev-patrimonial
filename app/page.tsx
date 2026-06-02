@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "../lib/supabase";
+import bcrypt from "bcryptjs";
 
 export default function Home() {
 
@@ -15,28 +16,39 @@ export default function Home() {
 
     e.preventDefault();
 
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from("evpatrimonial_investidores")
       .select("*")
       .eq("email", email)
-      .eq("senha", senha)
       .single();
 
-    if (data) {
-
-      localStorage.setItem(
-        "investidor",
-        JSON.stringify(data)
-      );
-
-      router.push("/dashboard");
-
-    } else {
+    if (!data) {
 
       alert("E-mail ou senha inválidos");
+      return;
 
-      console.log(error);
     }
+
+    const senhaValida =
+      await bcrypt.compare(
+        senha,
+        data.senha
+      );
+
+    if (!senhaValida) {
+
+      alert("E-mail ou senha inválidos");
+      return;
+
+    }
+
+    localStorage.setItem(
+      "investidor",
+      JSON.stringify(data)
+    );
+
+    router.push("/dashboard");
+
   }
 
   return (
@@ -97,7 +109,9 @@ export default function Home() {
           </button>
 
         </form>
+
       </div>
+
     </main>
   );
 }

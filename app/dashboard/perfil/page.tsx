@@ -28,6 +28,24 @@ export default function Perfil() {
   const [patrimonio, setPatrimonio] =
     useState(0);
 
+  const [novaSenha, setNovaSenha] =
+    useState("");
+
+  const [confirmarSenha, setConfirmarSenha] =
+    useState("");  
+
+  const [senhaAtual, setSenhaAtual] =
+    useState("");
+
+  const [telefone, setTelefone] =
+    useState("");
+
+  const [endereco, setEndereco] =
+    useState("");
+
+  const [chavePix, setChavePix] =
+    useState("");
+
   useEffect(() => {
 
     async function carregarPerfil() {
@@ -57,7 +75,23 @@ export default function Perfil() {
     .single();
 
 if (investidorCompleto) {
-  setInvestidor(investidorCompleto);
+
+  setInvestidor(
+    investidorCompleto
+  );
+
+  setTelefone(
+    investidorCompleto.telefone || ""
+  );
+
+  setEndereco(
+    investidorCompleto.endereco || ""
+  );
+
+  setChavePix(
+    investidorCompleto.chave_pix || ""
+  );
+
 }
 
       const {
@@ -107,6 +141,129 @@ if (investidorCompleto) {
     carregarPerfil();
 
   }, []);
+
+  async function salvarDados() {
+
+  const { error } =
+    await supabase
+      .from(
+        "evpatrimonial_investidores"
+      )
+      .update({
+        telefone,
+        endereco,
+        chave_pix: chavePix,
+      })
+      .eq(
+        "id",
+        investidor.id
+      );
+
+  if (error) {
+
+    alert(
+      "Erro ao salvar dados"
+    );
+
+    return;
+
+  }
+
+  const investidorAtualizado = {
+    ...investidor,
+    telefone,
+    endereco,
+    chave_pix: chavePix,
+  };
+
+  setInvestidor(
+    investidorAtualizado
+  );
+
+  localStorage.setItem(
+    "investidor",
+    JSON.stringify(
+      investidorAtualizado
+    )
+  );
+
+  alert(
+    "Dados atualizados com sucesso!"
+  );
+
+}
+
+  async function alterarSenha() {
+
+  if (!senhaAtual) {
+
+    alert(
+      "Digite sua senha atual"
+    );
+
+    return;
+  }
+
+  if (!novaSenha) {
+
+    alert(
+      "Digite a nova senha"
+    );
+
+    return;
+  }
+
+  if (
+    novaSenha !==
+    confirmarSenha
+  ) {
+
+    alert(
+      "As senhas não conferem"
+    );
+
+    return;
+  }
+
+  const response =
+    await fetch(
+      "/api/alterar-senha",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type":
+            "application/json",
+        },
+        body: JSON.stringify({
+          investidorId:
+            investidor.id,
+          senhaAtual,
+          novaSenha,
+        }),
+      }
+    );
+
+  const resultado =
+    await response.json();
+
+  if (!resultado.sucesso) {
+
+    alert(
+      resultado.erro
+    );
+
+    return;
+  }
+
+  setSenhaAtual("");
+  setNovaSenha("");
+  setConfirmarSenha("");
+
+  alert(
+    "Senha alterada com sucesso!"
+  );
+
+}
 
   function sair() {
 
@@ -325,6 +482,113 @@ if (investidorCompleto) {
             </div>
 
           </div>
+
+<div className="mt-8 rounded-xl border border-gray-200 p-5">
+
+  <h3 className="mb-5 text-xl font-bold text-[#0B1727]">
+    Atualizar Dados
+  </h3>
+
+  <div className="space-y-4">
+
+    <label className="block font-medium text-gray-700">
+      Telefone
+    </label>
+
+    <input
+      type="text"
+      value={telefone}
+      onChange={(e) =>
+        setTelefone(e.target.value)
+      }
+      className="w-full rounded-lg border border-gray-300 p-3 text-black"
+    />
+
+    <label className="block font-medium text-gray-700">
+      Endereço
+    </label>
+
+    <input
+      type="text"
+      value={endereco}
+      onChange={(e) =>
+        setEndereco(e.target.value)
+      }
+      className="w-full rounded-lg border border-gray-300 p-3 text-black"
+    />
+
+    <label className="block font-medium text-gray-700">
+      Chave PIX
+    </label>
+
+    <input
+      type="text"
+      value={chavePix}
+      onChange={(e) =>
+        setChavePix(e.target.value)
+      }
+      className="w-full rounded-lg border border-gray-300 p-3 text-black"
+    />
+
+    <button
+      onClick={salvarDados}
+      className="w-full rounded-lg bg-green-600 p-4 text-white transition hover:bg-green-700"
+    >
+      Salvar Dados
+    </button>
+
+  </div>
+
+</div>
+
+<div className="mt-8 rounded-xl border border-gray-200 p-5">
+
+  <h3 className="mb-5 text-xl font-bold text-[#0B1727]">
+    Alterar Senha
+  </h3>
+
+  <div className="space-y-4">
+
+    <input
+      type="password"
+      placeholder="Senha Atual"
+      value={senhaAtual}
+      onChange={(e) =>
+        setSenhaAtual(e.target.value)
+      }
+      className="w-full rounded-lg border border-gray-300 p-3 text-black"
+    />
+
+    <input
+      type="password"
+      placeholder="Nova Senha"
+      value={novaSenha}
+      onChange={(e) =>
+        setNovaSenha(e.target.value)
+      }
+      className="w-full rounded-lg border border-gray-300 p-3 text-black"
+    />
+
+    <input
+      type="password"
+      placeholder="Confirmar Nova Senha"
+      value={confirmarSenha}
+      onChange={(e) =>
+        setConfirmarSenha(e.target.value)
+      }
+      className="w-full rounded-lg border border-gray-300 p-3 text-black"
+    />
+
+    <button
+      onClick={alterarSenha}
+      className="w-full rounded-lg bg-[#0B1727] p-4 text-white"
+    >
+      Alterar Senha
+    </button>
+
+  </div>
+
+</div>
 
           {/* BOTÃO SAIR */}
 

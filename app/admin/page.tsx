@@ -9,6 +9,10 @@ import {
 
 import { supabase } from "../../lib/supabase";
 
+import bcrypt from "bcryptjs";
+
+console.log("BCRYPT:", bcrypt);
+
 export default function Admin() {
 
   const router = useRouter();
@@ -219,7 +223,13 @@ const [corretor, setCorretor] =
       setEditandoId(null);
 
     } else {
-
+      
+      const senhaHash =
+        await bcrypt.hash(
+          senha,
+          10
+        );
+   
       const { error } =
         await supabase
           .from(
@@ -229,7 +239,7 @@ const [corretor, setCorretor] =
   {
     nome,
     email,
-    senha,
+    senha: senhaHash,
     telefone,
     data_nascimento: dataNascimento,
     rg,

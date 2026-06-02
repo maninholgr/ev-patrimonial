@@ -184,7 +184,7 @@ export default function PerfilAdmin() {
 
 </div>
 
-        <div className="mb-6 rounded-lg bg-gray-100 p-4">
+        <div className="mb-6 rounded-lg bg-gray-100 p-4 text-black">
 
           <strong>
             Usuário:

@@ -21,6 +21,21 @@ export default function EditarMovimentacao() {
 
   useEffect(() => {
 
+    const admin =
+      localStorage.getItem(
+        "admin"
+      );
+
+    if (!admin) {
+
+      router.push(
+        "/admin/login"
+      );
+
+      return;
+
+    }
+
     carregarMovimentacao();
 
   }, []);
@@ -47,7 +62,9 @@ export default function EditarMovimentacao() {
     );
 
     setValor(
-      data.valor || ""
+      String(
+        data.valor || ""
+      )
     );
 
     setDescricao(
@@ -160,6 +177,7 @@ export default function EditarMovimentacao() {
           />
 
           <textarea
+            rows={4}
             value={descricao}
             onChange={(e) =>
               setDescricao(

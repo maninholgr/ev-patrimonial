@@ -31,15 +31,18 @@ export default function Movimentacoes() {
   useEffect(() => {
 
   const admin =
-    localStorage.getItem("admin");
+    localStorage.getItem(
+      "admin"
+    );
 
-  if (admin !== "logado") {
+  if (!admin) {
 
     router.push(
       "/admin/login"
     );
 
     return;
+
   }
 
   carregarInvestidores();

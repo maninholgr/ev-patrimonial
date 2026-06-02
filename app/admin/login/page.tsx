@@ -1,12 +1,9 @@
 "use client";
 
-import {
-  useState,
-} from "react";
-
-import {
-  useRouter,
-} from "next/navigation";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
+import bcrypt from "bcryptjs";
 
 export default function LoginAdmin() {
 
@@ -18,27 +15,57 @@ export default function LoginAdmin() {
   const [senha, setSenha] =
     useState("");
 
-  function entrar() {
+  async function entrar() {
 
-    if (
-      usuario === "admin" &&
-      senha === "123456"
-    ) {
+  const { data, error } =
+    await supabase
+      .from(
+        "evpatrimonial_admin"
+      )
+      .select("*")
+      .eq(
+        "usuario",
+        usuario
+      )
+      .single();
 
-      localStorage.setItem(
-        "admin",
-        "logado"
-      );
-
-      router.push("/admin");
-
-      return;
-    }
+  if (!data) {
 
     alert(
       "Usuário ou senha inválidos"
     );
+
+    return;
   }
+
+  const senhaValida =
+    await bcrypt.compare(
+      senha,
+      data.senha
+    );
+
+  if (!senhaValida) {
+
+    alert(
+      "Usuário ou senha inválidos"
+    );
+
+    return;
+  }
+
+  localStorage.setItem(
+  "admin",
+  JSON.stringify({
+    id: data.id,
+    usuario: data.usuario,
+  })
+);
+
+router.push("/admin");
+
+  router.push("/admin");
+
+}
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-[#0B1727]">
@@ -52,32 +79,36 @@ export default function LoginAdmin() {
         <div className="space-y-5">
 
           <label className="mb-2 block font-medium text-gray-700">
-    Usuário
-  </label>
+            Usuário
+          </label>
 
-  <input
-    type="text"
-    placeholder="Digite seu usuário"
-    value={usuario}
-    onChange={(e) =>
-      setUsuario(e.target.value)
-    }
-    className="w-full rounded-lg border border-gray-300 p-3 text-black placeholder:text-gray-400 outline-none focus:border-[#0B1727]"
-  />
+          <input
+            type="text"
+            placeholder="Digite seu usuário"
+            value={usuario}
+            onChange={(e) =>
+              setUsuario(
+                e.target.value
+              )
+            }
+            className="w-full rounded-lg border border-gray-300 p-3 text-black placeholder:text-gray-400 outline-none focus:border-[#0B1727]"
+          />
 
           <label className="mb-2 block font-medium text-gray-700">
-    Senha
-  </label>
+            Senha
+          </label>
 
-  <input
-    type="password"
-    placeholder="Digite sua senha"
-    value={senha}
-    onChange={(e) =>
-      setSenha(e.target.value)
-    }
-    className="w-full rounded-lg border border-gray-300 p-3 text-black placeholder:text-gray-400 outline-none focus:border-[#0B1727]"
-  />
+          <input
+            type="password"
+            placeholder="Digite sua senha"
+            value={senha}
+            onChange={(e) =>
+              setSenha(
+                e.target.value
+              )
+            }
+            className="w-full rounded-lg border border-gray-300 p-3 text-black placeholder:text-gray-400 outline-none focus:border-[#0B1727]"
+          />
 
           <button
             onClick={entrar}

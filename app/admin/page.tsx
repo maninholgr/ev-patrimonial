@@ -11,8 +11,6 @@ import { supabase } from "../../lib/supabase";
 
 import bcrypt from "bcryptjs";
 
-console.log("BCRYPT:", bcrypt);
-
 export default function Admin() {
 
   const router = useRouter();
@@ -56,18 +54,18 @@ const [corretor, setCorretor] =
   useEffect(() => {
 
     const admin =
-      localStorage.getItem(
-        "admin"
-      );
+  localStorage.getItem(
+    "admin"
+  );
 
-    if (admin !== "logado") {
+if (!admin) {
 
-      router.push(
-        "/admin/login"
-      );
+  router.push(
+    "/admin/login"
+  );
 
-      return;
-    }
+  return;
+}
 
     carregarInvestidores();
 
@@ -308,6 +306,17 @@ setCorretor("");
 
         <div className="mb-6 flex flex-col gap-3 md:flex-row">
 
+    <button
+    onClick={() =>
+      router.push(
+        "/admin/perfil"
+      )
+    }
+    className="rounded-lg bg-green-600 px-5 py-3 text-white transition hover:bg-green-700"
+  >
+    Perfil Admin
+  </button>
+
   <button
     onClick={() =>
       router.push(
@@ -336,7 +345,7 @@ setCorretor("");
     Sair
   </button>
 
-  </div>
+</div>
 
         <div className="space-y-5">
 

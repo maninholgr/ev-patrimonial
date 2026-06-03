@@ -108,6 +108,15 @@ export default function Home() {
             Entrar
           </button>
 
+          <a
+  href="https://wa.me/5511947463377?text=Olá,%20esqueci%20minha%20senha%20de%20acesso."
+  target="_blank"
+  rel="noopener noreferrer"
+  className="mt-4 block text-center text-sm text-blue-600 hover:underline"
+>
+  Esqueceu sua senha? Fale com o administrador
+</a>
+
         </form>
 
       </div>

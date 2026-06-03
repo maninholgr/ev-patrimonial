@@ -278,6 +278,62 @@ setCorretor("");
     carregarInvestidores();
   }
 
+  async function resetarSenha(
+  investidorId: string
+) {
+
+  const confirmar =
+    confirm(
+      "Deseja resetar a senha deste investidor?"
+    );
+
+  if (!confirmar)
+    return;
+
+  const numeros =
+    Math.floor(
+      1000 +
+      Math.random() * 9000
+    );
+
+  const novaSenha =
+    `Gold${numeros}@`;
+
+  const senhaHash =
+    await bcrypt.hash(
+      novaSenha,
+      10
+    );
+
+  const { error } =
+    await supabase
+      .from(
+        "evpatrimonial_investidores"
+      )
+      .update({
+        senha: senhaHash,
+      })
+      .eq(
+        "id",
+        investidorId
+      );
+
+  if (error) {
+
+    alert(
+      "Erro ao resetar senha"
+    );
+
+    return;
+
+  }
+
+  alert(
+    `Nova senha: ${novaSenha}`
+  );
+
+}
+
   function formatarValor(
     valor: number
   ) {
@@ -622,6 +678,17 @@ setCorretor("");
   >
     Movimentações
   </button>
+  
+  <button
+  onClick={() =>
+    resetarSenha(
+      investidor.id
+    )
+  }
+  className="rounded-lg bg-orange-600 px-4 py-2 text-white"
+>
+  Resetar Senha
+</button>
 
   <button
     onClick={async () => {

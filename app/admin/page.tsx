@@ -110,56 +110,67 @@ if (!admin) {
             let patrimonio = 0;
             let lucro = 0;
 
-            movimentacoes?.forEach(
-              (mov) => {
+            movimentacoes.forEach((mov) => {
 
-                if (
-                  mov.tipo ===
-                    "aporte" ||
-                  mov.tipo ===
-                    "rendimento"
-                ) {
+  if (
+    mov.tipo === "aporte" ||
+    mov.tipo === "rendimento" ||
+    mov.tipo === "bonus"
+  ) {
 
-                  patrimonio +=
-                    Number(
-                      mov.valor
-                    );
-                }
+    patrimonio += Number(mov.valor);
 
-                if (
-                  mov.tipo ===
-                    "rendimento"
-                ) {
+  }
 
-                  lucro += Number(
-                    mov.valor
-                  );
-                }
+  if (
+    mov.tipo === "saque" ||
+    mov.tipo === "taxa"
+  ) {
 
-                if (
-                  mov.tipo ===
-                    "saque" ||
-                  mov.tipo ===
-                    "taxa"
-                ) {
+    patrimonio -= Number(mov.valor);
 
-                  patrimonio -=
-                    Number(
-                      mov.valor
-                    );
-                }
+  }
 
-              }
-            );
+});
 
-            const rentabilidade =
-              patrimonio > 0
-                ? (
-                    (lucro /
-                      patrimonio) *
-                    100
-                  ).toFixed(2)
-                : "0.00";
+            let rentabilidade = "0.00";
+
+const ultimoRendimento =
+  movimentacoes
+    ?.filter(
+      (mov) =>
+        mov.tipo === "rendimento"
+    )
+    .sort(
+      (a, b) =>
+        new Date(b.created_at).getTime() -
+        new Date(a.created_at).getTime()
+    )[0];
+
+if (
+  ultimoRendimento?.descricao
+) {
+
+  const match =
+    ultimoRendimento.descricao.match(
+      /([\d.,]+)%/
+    );
+
+  if (match) {
+
+    rentabilidade =
+      match[1].replace(
+        ",",
+        "."
+      );
+
+  }
+
+
+console.log("Último rendimento:", ultimoRendimento);
+console.log("Rentabilidade:", rentabilidade);
+
+}
 
             return {
               ...investidor,
@@ -625,7 +636,7 @@ setCorretor("");
 
       setNome(investidor.nome);
       setEmail(investidor.email);
-      setSenha(investidor.senha);
+      setSenha("");
       setTelefone(investidor.telefone);
 
       setDataNascimento(

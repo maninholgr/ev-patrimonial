@@ -98,22 +98,27 @@ export default function Investimentos() {
       (movimentacao) => {
 
         if (
-          movimentacao.tipo ===
-            "aporte" ||
-          movimentacao.tipo ===
-            "rendimento"
-        ) {
+  movimentacao.tipo === "aporte" ||
+  movimentacao.tipo === "rendimento" ||
+  movimentacao.tipo === "bonus"
+) {
 
-          total += Number(
-            movimentacao.valor
-          );
+  total += Number(
+    movimentacao.valor
+  );
 
-        } else {
+} else if (
 
-          total -= Number(
-            movimentacao.valor
-          );
-        }
+  movimentacao.tipo === "saque" ||
+  movimentacao.tipo === "taxa"
+
+) {
+
+  total -= Number(
+    movimentacao.valor
+  );
+
+}
       }
     );
 
@@ -200,10 +205,9 @@ export default function Investimentos() {
                       className={`rounded-full p-3 text-white
 
                         ${
-                          movimentacao.tipo ===
-                            "aporte" ||
-                          movimentacao.tipo ===
-                            "rendimento"
+                          movimentacao.tipo === "aporte" ||
+movimentacao.tipo === "rendimento" ||
+movimentacao.tipo === "bonus"
 
                             ? "bg-green-600"
 
@@ -214,17 +218,17 @@ export default function Investimentos() {
                     >
 
                       {
-                        movimentacao.tipo ===
-                          "aporte" ||
-                        movimentacao.tipo ===
-                          "rendimento"
+  movimentacao.tipo === "aporte" ||
+  movimentacao.tipo === "rendimento" ||
+  movimentacao.tipo === "bonus"
 
-                          ? (
-                            <ArrowUpCircle />
-                          ) : (
-                            <ArrowDownCircle />
-                          )
-                      }
+    ? (
+        <ArrowUpCircle />
+      )
+    : (
+        <ArrowDownCircle />
+      )
+}
 
                     </div>
 
@@ -245,33 +249,32 @@ export default function Investimentos() {
                   </div>
 
                   <div
-                    className={`text-lg md:text-xl font-bold
+  className={`text-lg md:text-xl font-bold
 
-                      ${
-                        movimentacao.tipo ===
-                          "aporte" ||
-                        movimentacao.tipo ===
-                          "rendimento"
+    ${
+      movimentacao.tipo === "aporte" ||
+      movimentacao.tipo === "rendimento" ||
+      movimentacao.tipo === "bonus"
 
-                          ? "text-green-600"
+        ? "text-green-600"
 
-                          : "text-red-500"
-                      }
+        : "text-red-500"
+    }
 
-                    `}
-                  >
+  `}
+>
 
-                   {`R$ ${Number(
-  movimentacao.valor
-).toLocaleString(
-  "pt-BR",
-  {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }
-)}`}
+  {`R$ ${Number(
+    movimentacao.valor
+  ).toLocaleString(
+    "pt-BR",
+    {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }
+  )}`}
 
-                  </div>
+</div>
 
                 </div>
 

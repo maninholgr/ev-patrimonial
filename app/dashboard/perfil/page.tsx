@@ -108,31 +108,28 @@ if (investidorCompleto) {
 
       let total = 0;
 
-      movimentacoes?.forEach(
-        (mov) => {
+      movimentacoes?.forEach((mov) => {
 
-          if (
-            mov.tipo === "aporte" ||
-            mov.tipo === "rendimento"
-          ) {
+  if (
+    mov.tipo === "aporte" ||
+    mov.tipo === "rendimento" ||
+    mov.tipo === "bonus"
+  ) {
 
-            total += Number(
-              mov.valor
-            );
-          }
+    total += Number(mov.valor);
 
-          if (
-            mov.tipo === "saque" ||
-            mov.tipo === "taxa"
-          ) {
+  }
 
-            total -= Number(
-              mov.valor
-            );
-          }
+  if (
+    mov.tipo === "saque" ||
+    mov.tipo === "taxa"
+  ) {
 
-        }
-      );
+    total -= Number(mov.valor);
+
+  }
+
+});
 
       setPatrimonio(total);
 

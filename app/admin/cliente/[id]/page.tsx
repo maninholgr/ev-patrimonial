@@ -60,7 +60,8 @@ export default function ClienteDetalhes() {
 
       if (
         mov.tipo === "aporte" ||
-        mov.tipo === "rendimento"
+        mov.tipo === "rendimento" ||
+        mov.tipo === "bonus"
       ) {
 
         patrimonioCalc +=
@@ -89,14 +90,40 @@ export default function ClienteDetalhes() {
 
     });
 
-    const rentCalc =
-      patrimonioCalc > 0
-        ? (
-            (lucroCalc /
-              patrimonioCalc) *
-            100
-          ).toFixed(2)
-        : "0.00";
+    let rentCalc = "0.00";
+
+const ultimoRendimento =
+  movimentacoes
+    ?.filter(
+      (mov) =>
+        mov.tipo === "rendimento"
+    )
+    .sort(
+      (a, b) =>
+        new Date(b.created_at).getTime() -
+        new Date(a.created_at).getTime()
+    )[0];
+
+if (
+  ultimoRendimento?.descricao
+) {
+
+  const match =
+    ultimoRendimento.descricao.match(
+      /([\d.,]+)%/
+    );
+
+  if (match) {
+
+    rentCalc =
+      match[1].replace(
+        ",",
+        "."
+      );
+
+  }
+
+}
 
     setPatrimonio(
       patrimonioCalc

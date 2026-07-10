@@ -311,13 +311,12 @@ export default function Relatorios() {
 
                     <td
                       className={`p-4 font-semibold ${
-                        movimentacao.tipo ===
-                          "aporte" ||
-                        movimentacao.tipo ===
-                          "rendimento"
-                          ? "text-green-600"
-                          : "text-red-500"
-                      }`}
+  movimentacao.tipo === "aporte" ||
+  movimentacao.tipo === "rendimento" ||
+  movimentacao.tipo === "bonus"
+    ? "text-green-600"
+    : "text-red-500"
+}`}
                     >
 
                       R$ {

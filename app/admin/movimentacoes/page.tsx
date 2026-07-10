@@ -83,12 +83,14 @@ export default function Movimentacoes() {
         ]);
 
     if (error) {
-      console.log(error);
-      alert(
-        "Erro ao salvar movimentação"
-      );
-      return;
-    }
+
+  console.log(error);
+
+  alert(error.message);
+
+  return;
+
+}
 
     alert(
       "Movimentação cadastrada!"

@@ -544,14 +544,13 @@ export default function Dashboard() {
                         className={`rounded-full px-3 py-1 text-sm font-semibold text-white
 
                           ${
-                            movimentacao.tipo ===
-                              "aporte" ||
-                            movimentacao.tipo ===
-                              "rendimento"
+                            movimentacao.tipo === "aporte" ||
+movimentacao.tipo === "rendimento" ||
+movimentacao.tipo === "bonus"
 
-                              ? "bg-green-600"
+  ? "bg-green-600"
 
-                              : "bg-red-500"
+  : "bg-red-500"
                           }
 
                         `}
@@ -565,10 +564,9 @@ export default function Dashboard() {
 
                     <td
   className={`p-3 font-semibold ${
-    movimentacao.tipo ===
-      "aporte" ||
-    movimentacao.tipo ===
-      "rendimento"
+    movimentacao.tipo === "aporte" ||
+movimentacao.tipo === "rendimento" ||
+movimentacao.tipo === "bonus"
       ? "text-green-600"
       : "text-red-500"
   }`}

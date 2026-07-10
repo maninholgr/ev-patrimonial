@@ -27,9 +27,24 @@ export default function MovimentacoesInvestidor() {
 
   useEffect(() => {
 
-    carregarDados();
+  const admin =
+    localStorage.getItem(
+      "admin"
+    );
 
-  }, []);
+  if (!admin) {
+
+    router.push(
+      "/admin/login"
+    );
+
+    return;
+
+  }
+
+  carregarDados();
+
+}, []);
 
   async function carregarDados() {
 
@@ -155,13 +170,13 @@ export default function MovimentacoesInvestidor() {
 
     if (error) {
 
-      alert(
-        "Erro ao excluir"
-      );
+  console.log(error);
 
-      return;
+  alert(error.message);
 
-    }
+  return;
+
+}
 
     carregarDados();
 

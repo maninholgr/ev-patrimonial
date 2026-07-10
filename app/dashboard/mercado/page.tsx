@@ -15,6 +15,17 @@ import {
   useRef,
 } from "react";
 
+import { supabase } from "@/lib/supabase";
+
+import {
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+} from "recharts";
+
 export default function Mercado() {
 
   const router = useRouter();
@@ -25,6 +36,18 @@ export default function Mercado() {
   ouro: 0,
 });
 
+const [investidor, setInvestidor] =
+  useState<any>(null);
+
+const [movimentacoes, setMovimentacoes] =
+  useState<any[]>([]);
+
+const [lucroTotal, setLucroTotal] =
+  useState(0);
+
+const [rentabilidade, setRentabilidade] =
+  useState(0);
+
 const [ultimaAtualizacao,
   setUltimaAtualizacao] =
   useState("");
@@ -33,15 +56,30 @@ useEffect(() => {
 
   carregarMercado();
 
-  const intervalo = setInterval(
-    carregarMercado,
-    60000
-  );
+  const investidorStorage =
+    localStorage.getItem("investidor");
+
+  if (investidorStorage) {
+
+    const investidorData =
+      JSON.parse(investidorStorage);
+
+    setInvestidor(investidorData);
+
+    carregarMovimentacoes(
+      investidorData.id
+    );
+
+  }
+
+  const intervalo =
+    setInterval(
+      carregarMercado,
+      60000
+    );
 
   return () =>
-    clearInterval(
-      intervalo
-    );
+    clearInterval(intervalo);
 
 }, []);
 
@@ -79,6 +117,65 @@ async function carregarMercado() {
 
   const mercadoRef = useRef<HTMLDivElement>(null);
 
+   async function carregarMovimentacoes(
+  investidorId: string
+) {
+
+  const { data, error } =
+    await supabase
+      .from("evpatrimonial_movimentacoes")
+      .select("*")
+      .eq("investidor_id", investidorId)
+      .order("created_at", { ascending: true });
+
+  if (error) {
+
+    console.log(error);
+
+    return;
+
+  }
+
+  setMovimentacoes(data || []);
+
+  const rendimentos =
+    (data || []).filter(
+      mov => mov.tipo === "rendimento"
+    );
+
+  if (rendimentos.length > 0) {
+
+    const ultimo =
+      rendimentos[
+        rendimentos.length - 1
+      ];
+
+    setLucroTotal(
+      Number(ultimo.valor)
+    );
+
+    const descricao =
+      (
+        ultimo.descricao || ""
+      ).replace(",", ".");
+
+    const match =
+      descricao.match(
+        /\d+(\.\d+)?/
+      );
+
+    if (match) {
+
+      setRentabilidade(
+        parseFloat(match[0])
+      );
+
+    }
+
+  }
+
+}
+
 function irParaMercado() {
 
   mercadoRef.current?.scrollIntoView({
@@ -86,6 +183,71 @@ function irParaMercado() {
   });
 
 }
+
+const patrimonioAutomatico =
+  movimentacoes.reduce(
+    (total, movimentacao) => {
+
+      const valor =
+        Number(
+          movimentacao.valor
+        );
+
+      if (
+        movimentacao.tipo === "aporte" ||
+        movimentacao.tipo === "bonus" ||
+        movimentacao.tipo === "rendimento"
+      ) {
+
+        return total + valor;
+
+      }
+
+      if (
+        movimentacao.tipo === "saque" ||
+        movimentacao.tipo === "taxa"
+      ) {
+
+        return total - valor;
+
+      }
+
+      return total;
+
+    },
+    0
+  );
+
+let saldo = 0;
+
+const graficoPatrimonio =
+  movimentacoes.map((mov) => {
+
+    const valor = Number(mov.valor);
+
+    if (
+      mov.tipo === "aporte" ||
+      mov.tipo === "bonus" ||
+      mov.tipo === "rendimento"
+    ) {
+      saldo += valor;
+    }
+
+    if (
+      mov.tipo === "saque" ||
+      mov.tipo === "taxa"
+    ) {
+      saldo -= valor;
+    }
+
+    return {
+  etapa:
+    mov.tipo.charAt(0).toUpperCase() +
+    mov.tipo.slice(1),
+  patrimonio: saldo,
+};
+
+  });
 
   return (
 
@@ -179,32 +341,80 @@ function irParaMercado() {
                 </p>
 
                 <h3 className="mt-2 text-3xl md:text-5xl font-bold break-words">
-                  R$ 1.135,32
+                  R$ {
+  patrimonioAutomatico.toLocaleString(
+    "pt-BR",
+    {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }
+  )
+}
                 </h3>
 
               </div>
 
               <div className="rounded-full bg-emerald-900/40 px-4 py-2 font-semibold text-emerald-400">
-                +2,7%
+                +{rentabilidade}%
               </div>
 
             </div>
 
             {/* GRÁFICO VISUAL */}
 
-            <div className="mt-8 flex h-56 items-end gap-4 rounded-3xl bg-gradient-to-b from-emerald-900/30 to-emerald-500/10 p-6">
+            <div className="mt-8 h-56">
 
-              <div className="h-16 w-full rounded-t-xl bg-emerald-500/70" />
-              <div className="h-24 w-full rounded-t-xl bg-emerald-500/70" />
-              <div className="h-20 w-full rounded-t-xl bg-emerald-500/70" />
-              <div className="h-32 w-full rounded-t-xl bg-emerald-500/70" />
-              <div className="h-28 w-full rounded-t-xl bg-emerald-500/70" />
-              <div className="h-40 w-full rounded-t-xl bg-emerald-500/70" />
-              <div className="h-48 w-full rounded-t-xl bg-emerald-500/70" />
-              <div className="h-44 w-full rounded-t-xl bg-emerald-500/70" />
-              <div className="h-56 w-full rounded-t-xl bg-emerald-500/70" />
+  <ResponsiveContainer
+  width="100%"
+  height="100%"
+>
 
-            </div>
+  <LineChart
+    data={graficoPatrimonio}
+  >
+
+    <XAxis
+  dataKey="etapa"
+/>
+
+    <YAxis
+  domain={[
+    (dataMin: number) =>
+      dataMin * 0.98,
+
+    (dataMax: number) =>
+      dataMax * 1.02,
+  ]}
+/>
+
+    <Tooltip
+      formatter={(value: number) =>
+        value.toLocaleString(
+          "pt-BR",
+          {
+            style: "currency",
+            currency: "BRL",
+          }
+        )
+      }
+    />
+
+    <Line
+      type="monotone"
+      dataKey="patrimonio"
+      stroke="#10B981"
+      strokeWidth={4}
+      dot={{
+        r: 5,
+        fill: "#10B981",
+      }}
+    />
+
+  </LineChart>
+
+</ResponsiveContainer>
+
+</div>
 
             {/* RESUMO */}
 
@@ -216,8 +426,16 @@ function irParaMercado() {
                   Patrimônio
                 </p>
 
-                <h4 className="mt-2 text-2xl font-bold">
-                  R$ 1.135,32
+                <h4 className="mt-2 text-[26px] font-bold whitespace-nowrap leading-none">
+                  R$ {
+  patrimonioAutomatico.toLocaleString(
+    "pt-BR",
+    {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }
+  )
+}
                 </h4>
 
               </div>
@@ -229,8 +447,16 @@ function irParaMercado() {
                 </p>
 
                 <h4 className="mt-2 text-2xl font-bold text-emerald-400">
-                  R$ 1.135,32
-                </h4>
+  R$ {
+    lucroTotal.toLocaleString(
+      "pt-BR",
+      {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }
+    )
+  }
+</h4>
 
               </div>
 
@@ -241,7 +467,7 @@ function irParaMercado() {
                 </p>
 
                 <h4 className="mt-2 text-2xl font-bold text-emerald-400">
-                  10,20%
+                  {rentabilidade}%
                 </h4>
 
               </div>

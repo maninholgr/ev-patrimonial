@@ -388,16 +388,15 @@ const graficoPatrimonio =
 />
 
     <Tooltip
-      formatter={(value: number) =>
-        value.toLocaleString(
-          "pt-BR",
-          {
-            style: "currency",
-            currency: "BRL",
-          }
-        )
-      }
-    />
+  formatter={(value) => {
+    return [
+      Number(value).toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+      }),
+    ];
+  }}
+/>
 
     <Line
       type="monotone"

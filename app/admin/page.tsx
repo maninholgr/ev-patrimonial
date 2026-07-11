@@ -110,7 +110,7 @@ if (!admin) {
             let patrimonio = 0;
             let lucro = 0;
 
-            movimentacoes.forEach((mov) => {
+            movimentacoes?.forEach((mov) => {
 
   if (
     mov.tipo === "aporte" ||

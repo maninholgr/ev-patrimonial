@@ -6,6 +6,8 @@ import { supabase } from "../lib/supabase";
 import bcrypt from "bcryptjs";
 
 export default function Home() {
+  
+  const SITE_BLOQUEADO = true;
 
   const router = useRouter();
 
@@ -49,6 +51,55 @@ export default function Home() {
 
     router.push("/dashboard");
 
+  }
+
+  if (SITE_BLOQUEADO) {
+    return (
+      <main className="min-h-screen bg-[#F4F7FA] flex items-center justify-center p-6">
+        <div className="w-full max-w-lg rounded-3xl bg-white p-8 md:p-12 text-center shadow-xl">
+
+          <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-red-50">
+            <span className="text-4xl">🔒</span>
+          </div>
+
+          <h1 className="mb-4 text-2xl md:text-3xl font-bold text-[#0B1727]">
+            Site temporariamente indisponível
+          </h1>
+
+          <p className="mb-8 text-gray-600 leading-relaxed">
+            No momento, o site GoldUSD está temporariamente indisponível.
+          </p>
+
+          <div className="rounded-2xl bg-[#F4F7FA] p-6">
+            <p className="mb-2 text-sm text-gray-500">
+              Para mais informações, entre em contato com:
+            </p>
+
+            <p className="text-xl font-bold text-[#0B1727]">
+              Edimilson Veiga
+            </p>
+
+            <p className="mt-2 text-lg text-gray-700">
+              📱 (11) 94746-3377
+            </p>
+          </div>
+
+          <a
+            href="https://wa.me/5511947463377"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-6 block w-full rounded-xl bg-green-600 px-6 py-4 font-semibold text-white transition hover:bg-green-700"
+          >
+            💬 Falar pelo WhatsApp
+          </a>
+
+          <p className="mt-8 text-sm text-gray-400">
+            GoldUSD Investimentos
+          </p>
+
+        </div>
+      </main>
+    );
   }
 
   return (

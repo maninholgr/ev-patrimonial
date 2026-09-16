@@ -13,6 +13,8 @@ import bcrypt from "bcryptjs";
 
 export default function Admin() {
 
+  const SITE_BLOQUEADO = true;  
+
   const router = useRouter();
 
   const [nome, setNome] =
@@ -110,7 +112,9 @@ if (!admin) {
             let patrimonio = 0;
             let lucro = 0;
 
-            movimentacoes?.forEach((mov) => {
+            if (!movimentacoes) return;
+
+movimentacoes.forEach((mov) => {
 
   if (
     mov.tipo === "aporte" ||
@@ -360,8 +364,58 @@ setCorretor("");
     );
   }
 
+  if (SITE_BLOQUEADO) {
   return (
-    <main className="min-h-screen bg-[#F4F7FA] p-4 md:p-10">
+    <main className="min-h-screen bg-[#F4F7FA] flex items-center justify-center p-6">
+      <div className="w-full max-w-lg rounded-3xl bg-white p-8 md:p-12 text-center shadow-xl">
+
+        <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-red-50">
+          <span className="text-4xl">🔒</span>
+        </div>
+
+        <h1 className="mb-4 text-2xl md:text-3xl font-bold text-[#0B1727]">
+          Sistema temporariamente indisponível
+        </h1>
+
+        <p className="mb-8 text-gray-600 leading-relaxed">
+          No momento, o sistema administrativo está temporariamente
+          indisponível.
+        </p>
+
+        <div className="rounded-2xl bg-[#F4F7FA] p-6">
+          <p className="mb-2 text-sm text-gray-500">
+            Para mais informações, entre em contato com:
+          </p>
+
+          <p className="text-xl font-bold text-[#0B1727]">
+            Luciano Goularte
+          </p>
+
+          <p className="mt-2 text-lg text-gray-700">
+            📱 (53) 99928-5822
+          </p>
+        </div>
+
+        <a
+          href="https://wa.me/5553999285822"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-6 block w-full rounded-xl bg-green-600 px-6 py-4 font-semibold text-white transition hover:bg-green-700"
+        >
+          💬 Falar pelo WhatsApp
+        </a>
+
+        <p className="mt-8 text-sm text-gray-400">
+          GoldUSD Investimentos
+        </p>
+
+      </div>
+    </main>
+  );
+}
+
+return (
+  <main className="min-h-screen bg-[#F4F7FA] p-4 md:p-10">
 
       {/* CADASTRO */}
 
